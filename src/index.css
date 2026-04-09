@@ -1,0 +1,21 @@
+@import 'tailwindcss';
+@import './styles/base-components.css';
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    font-family:
+      Inter,
+      'Segoe UI',
+      Roboto,
+      system-ui,
+      -apple-system,
+      sans-serif;
+    background-color: var(--app-bg, #f7f7f8);
+    color: var(--text-primary, #111113);
+  }
+}
