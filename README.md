@@ -48,7 +48,7 @@ Open the URL shown in the terminal (usually `http://localhost:5173`).
 - **Explorer** with icons (incl. empty folders), keyboard navigation, and **details** panel with child links that update the route.
 - **Jest** + **ts-jest** for tests (`src/**/*.test.ts`); sample tree: `public/file-tree-sample.json`.
 
-## TODO
+## If we had more time
 
 - Full-text **search** across the tree with persisted results.
 - Richer **preview** (e.g. syntax-highlighted file content from metadata).
