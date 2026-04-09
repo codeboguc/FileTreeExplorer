@@ -1,0 +1,177 @@
+{
+  "name": "root",
+  "type": "folder",
+  "children": [
+    {
+      "name": ".github",
+      "type": "folder",
+      "children": [
+        {
+          "name": "workflows",
+          "type": "folder",
+          "children": [
+            { "name": "ci.yml", "type": "file", "size": 3240 },
+            { "name": "preview.yml", "type": "file", "size": 2210 }
+          ]
+        },
+        { "name": "CODEOWNERS", "type": "file", "size": 180 }
+      ]
+    },
+    {
+      "name": "docs",
+      "type": "folder",
+      "children": [
+        { "name": "README.md", "type": "file", "size": 5140 },
+        { "name": "architecture.md", "type": "file", "size": 8380 },
+        {
+          "name": "adr",
+          "type": "folder",
+          "children": [
+            { "name": "0001-routing.md", "type": "file", "size": 1930 },
+            { "name": "0002-state.md", "type": "file", "size": 1680 }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "src",
+      "type": "folder",
+      "children": [
+        {
+          "name": "assets",
+          "type": "folder",
+          "children": [
+            { "name": "logo.svg", "type": "file", "size": 9522 },
+            { "name": "empty.txt", "type": "file", "size": 0 }
+          ]
+        },
+        {
+          "name": "components",
+          "type": "folder",
+          "children": [
+            {
+              "name": "explorer",
+              "type": "folder",
+              "children": [
+                { "name": "ExplorerPanel.tsx", "type": "file", "size": 1520 },
+                { "name": "NodeMeta.tsx", "type": "file", "size": 860 }
+              ]
+            },
+            {
+              "name": "layout",
+              "type": "folder",
+              "children": [
+                { "name": "AppHeader.tsx", "type": "file", "size": 770 },
+                { "name": "Panel.tsx", "type": "file", "size": 990 }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "features",
+          "type": "folder",
+          "children": [
+            {
+              "name": "file-import",
+              "type": "folder",
+              "children": [
+                {
+                  "name": "hooks",
+                  "type": "folder",
+                  "children": [
+                    { "name": "useFileImport.ts", "type": "file", "size": 2560 }
+                  ]
+                },
+                {
+                  "name": "utils",
+                  "type": "folder",
+                  "children": [
+                    { "name": "parseAndValidateTree.ts", "type": "file", "size": 920 }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "tree-explorer",
+              "type": "folder",
+              "children": [
+                {
+                  "name": "components",
+                  "type": "folder",
+                  "children": [
+                    { "name": "TreeExplorer.tsx", "type": "file", "size": 2840 },
+                    { "name": "TreeNodeRow.tsx", "type": "file", "size": 1460 }
+                  ]
+                },
+                {
+                  "name": "hooks",
+                  "type": "folder",
+                  "children": [
+                    { "name": "useExpandedFolders.ts", "type": "file", "size": 750 }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "generated",
+          "type": "folder",
+          "children": []
+        },
+        {
+          "name": "deep",
+          "type": "folder",
+          "children": [
+            {
+              "name": "a",
+              "type": "folder",
+              "children": [
+                {
+                  "name": "b",
+                  "type": "folder",
+                  "children": [
+                    {
+                      "name": "c",
+                      "type": "folder",
+                      "children": [
+                        {
+                          "name": "d",
+                          "type": "folder",
+                          "children": [{ "name": "e.txt", "type": "file", "size": 12 }]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        { "name": "App.tsx", "type": "file", "size": 4420 },
+        { "name": "main.tsx", "type": "file", "size": 340 },
+        { "name": ".env.example", "type": "file", "size": 120 },
+        { "name": "z-last.ts", "type": "file", "size": 480 },
+        { "name": "A-first.ts", "type": "file", "size": 470 }
+      ]
+    },
+    {
+      "name": "tmp",
+      "type": "folder",
+      "children": []
+    },
+    {
+      "name": "public",
+      "type": "folder",
+      "children": [
+        { "name": "favicon.svg", "type": "file", "size": 9522 },
+        { "name": "icons.svg", "type": "file", "size": 5031 },
+        { "name": "reference-layout.png", "type": "file", "size": 40423 }
+      ]
+    },
+    { "name": ".gitignore", "type": "file", "size": 253 },
+    { "name": "package.json", "type": "file", "size": 781 },
+    { "name": "pnpm-lock.yaml", "type": "file", "size": 1048576 },
+    { "name": "tsconfig.json", "type": "file", "size": 119 }
+  ]
+}
