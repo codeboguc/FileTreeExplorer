@@ -27,16 +27,16 @@ Open the URL shown in the terminal (usually `http://localhost:5173`).
 
 ## Scripts
 
-| Command            | Description                                      |
-| ------------------ | ------------------------------------------------ |
-| `npm run dev`      | Start Vite dev server with HMR                   |
-| `npm run build`    | Typecheck (`tsc -b`) and production build        |
-| `npm run preview`  | Serve the production build locally               |
-| `npm run lint`     | ESLint (type-aware rules on app code)            |
-| `npm run format`   | Prettier: format the repo (`--write`)            |
+| Command                | Description                                 |
+| ---------------------- | ------------------------------------------- |
+| `npm run dev`          | Start Vite dev server with HMR              |
+| `npm run build`        | Typecheck (`tsc -b`) and production build   |
+| `npm run preview`      | Serve the production build locally          |
+| `npm run lint`         | ESLint (type-aware rules on app code)       |
+| `npm run format`       | Prettier: format the repo (`--write`)       |
 | `npm run format:check` | Prettier: verify formatting (`--check`)     |
-| `npm run test`     | Jest unit tests (e.g. JSON tree validation)      |
-| `npm run test:watch` | Jest in watch mode                             |
+| `npm run test`         | Jest unit tests (e.g. JSON tree validation) |
+| `npm run test:watch`   | Jest in watch mode                          |
 
 **Prettier** uses `.prettierrc.json` and `prettier-plugin-organize-imports` (import organize on format). Ignores are listed in `.prettierignore`.
 
@@ -48,18 +48,9 @@ Open the URL shown in the terminal (usually `http://localhost:5173`).
 - **Explorer** with icons (incl. empty folders), keyboard navigation, and **details** panel with child links that update the route.
 - **Jest** + **ts-jest** for tests (`src/**/*.test.ts`); sample tree: `public/file-tree-sample.json`.
 
-## Architecture notes (brief)
-
-- Feature-oriented folders under `src/features/` (file import, tree explorer) and shared UI under `src/components/`.
-- Core tree types and `validateTreeJson` live in `src/lib/fileTree.ts`.
-
-## If we had more time
+## TODO
 
 - Full-text **search** across the tree with persisted results.
 - Richer **preview** (e.g. syntax-highlighted file content from metadata).
 - Stricter accessibility (e.g. `aria-activedescendant` for the tree).
 
-## Known limitations
-
-- No real filesystem access; trees come only from JSON import/sample.
-- Search and “preview file contents” beyond basic metadata are not implemented yet.
