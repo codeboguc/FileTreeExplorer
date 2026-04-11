@@ -165,8 +165,7 @@
       "type": "folder",
       "children": [
         { "name": "favicon.svg", "type": "file", "size": 9522 },
-        { "name": "icons.svg", "type": "file", "size": 5031 },
-        { "name": "reference-layout.png", "type": "file", "size": 40423 }
+        { "name": "icons.svg", "type": "file", "size": 5031 }
       ]
     },
     { "name": ".gitignore", "type": "file", "size": 253 },

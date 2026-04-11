@@ -1,0 +1,74 @@
+/* -------------------------------------------------------------------------- */
+/* Details panel — metadata grid, section labels, folder children list.        */
+/* -------------------------------------------------------------------------- */
+
+@layer components {
+  .details-meta-grid {
+    @apply grid grid-cols-[140px_1fr] gap-x-3 gap-y-2 text-sm;
+  }
+
+  .details-meta-row {
+    @apply contents;
+  }
+
+  .details-section-label {
+    @apply mb-2 text-xs font-semibold uppercase tracking-wide;
+    color: var(--text-muted);
+  }
+
+  .details-children-list {
+    @apply space-y-1 text-sm;
+  }
+
+  .details-file-size {
+    @apply ml-2 text-xs;
+    color: var(--text-muted);
+  }
+
+  /* Clickable full path in details → sync explorer selection */
+  .details-path-links {
+    @apply inline text-sm leading-relaxed;
+  }
+
+  .details-path-plain {
+    @apply font-mono text-sm;
+    color: var(--text-primary);
+  }
+
+  .details-path-segment-wrap {
+    @apply inline;
+  }
+
+  .details-path-sep {
+    @apply select-none px-px;
+    color: var(--text-muted);
+  }
+
+  .details-path-segment-btn {
+    @apply rounded px-0.5 font-mono text-sm;
+    color: var(--selection-accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    background-color: transparent;
+  }
+
+  .details-path-segment-btn:hover {
+    color: var(--text-primary);
+    background-color: var(--row-hover);
+  }
+
+  .details-path-segment-btn:focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 1px;
+  }
+
+  .details-path-segment-btn--current {
+    color: var(--text-primary);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .details-path-segment-btn--current:hover {
+    text-decoration: underline;
+  }
+}

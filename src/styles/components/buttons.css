@@ -1,0 +1,19 @@
+/* -------------------------------------------------------------------------- */
+/* Buttons — primary / secondary; pair with theme tokens for colors.          */
+/* -------------------------------------------------------------------------- */
+
+@layer components {
+  .btn-secondary {
+    @apply rounded-md border px-3 py-1.5 text-sm font-medium;
+    border-color: var(--btn-secondary-border);
+    background-color: var(--btn-secondary-bg);
+    color: var(--btn-secondary-text);
+  }
+
+  .btn-primary {
+    @apply rounded-md border px-3 py-1.5 text-sm font-medium;
+    border-color: var(--btn-primary-border);
+    background-color: var(--btn-primary-bg);
+    color: var(--btn-primary-text);
+  }
+}

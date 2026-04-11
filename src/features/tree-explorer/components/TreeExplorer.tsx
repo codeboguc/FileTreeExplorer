@@ -1,4 +1,4 @@
-import { useMemo, useState, type KeyboardEvent } from 'react'
+import { useEffect, useMemo, useState, type KeyboardEvent } from 'react'
 import { TreeNodeType } from '../../../lib/fileTree'
 import { useExpandedFolders } from '../hooks/useExpandedFolders'
 import type { TreeNode } from '../types'
@@ -8,6 +8,17 @@ type TreeExplorerProps = {
   root: TreeNode
   selectedPath: string | null
   onSelectNode: (payload: { node: TreeNode; fullPath: string }) => void
+  searchQuery?: string
+}
+
+const subtreeHasNameMatch = (node: TreeNode, normalizedQuery: string): boolean => {
+  if (node.name.toLowerCase().includes(normalizedQuery)) {
+    return true
+  }
+  if (node.type === TreeNodeType.Folder) {
+    return node.children.some((child) => subtreeHasNameMatch(child, normalizedQuery))
+  }
+  return false
 }
 
 type FlatListItem = {
@@ -38,10 +49,73 @@ const getParentPath = (fullPath: string): string | null => {
   return segments.slice(0, -1).join('/')
 }
 
-export function TreeExplorer({ root, selectedPath, onSelectNode }: TreeExplorerProps) {
+/** Internal folder keys on the route to `targetFullPath` (same ordering as tree walk). */
+function collectAncestorFolderPathKeys(
+  root: TreeNode,
+  targetFullPath: string | null,
+): string[] {
+  if (!targetFullPath) {
+    return []
+  }
   const rootKey = 'root::0'
-  const { isExpanded, toggleExpanded } = useExpandedFolders()
+  if (targetFullPath === root.name) {
+    return []
+  }
+  const prefix = `${root.name}/`
+  if (!targetFullPath.startsWith(prefix)) {
+    return []
+  }
+  const nameSegments = targetFullPath.slice(root.name.length + 1).split('/').filter(Boolean)
+  if (nameSegments.length === 0) {
+    return []
+  }
+
+  let current: TreeNode = root
+  let pathSegments: string[] = [rootKey]
+  const toExpand: string[] = []
+
+  for (let i = 0; i < nameSegments.length; i++) {
+    const pathKey = buildPathKey(pathSegments)
+    if (current.type !== TreeNodeType.Folder) {
+      break
+    }
+
+    toExpand.push(pathKey)
+
+    const seg = nameSegments[i]
+    const orderedChildren = [...current.children].sort((left, right) => {
+      if (left.type !== right.type) {
+        return left.type === TreeNodeType.Folder ? -1 : 1
+      }
+      return asSortableName(left.name).localeCompare(asSortableName(right.name))
+    })
+    const childIndex = orderedChildren.findIndex((c) => c.name === seg)
+    if (childIndex === -1) {
+      break
+    }
+    const child = orderedChildren[childIndex]
+    pathSegments = [...pathSegments, `${child.name}::${childIndex}`]
+    current = child
+  }
+
+  return toExpand
+}
+
+export function TreeExplorer({
+  root,
+  selectedPath,
+  onSelectNode,
+  searchQuery = '',
+}: TreeExplorerProps) {
+  const rootKey = 'root::0'
+  const { isExpanded, toggleExpanded, expandPaths } = useExpandedFolders()
   const [focusedPath, setFocusedPath] = useState<string | null>(null)
+
+  const normalizedSearch = searchQuery.trim().toLowerCase()
+
+  useEffect(() => {
+    expandPaths(collectAncestorFolderPathKeys(root, selectedPath))
+  }, [expandPaths, root, selectedPath])
 
   const rows = useMemo<FlatListItem[]>(() => {
     const result: FlatListItem[] = []
@@ -110,9 +184,95 @@ export function TreeExplorer({ root, selectedPath, onSelectNode }: TreeExplorerP
       })
     }
 
-    walk(root, 0, [rootKey], [root.name])
+    const walkFiltered = (
+      node: TreeNode,
+      depth: number,
+      pathSegments: string[],
+      displaySegments: string[],
+    ) => {
+      const pathKey = buildPathKey(pathSegments)
+      const fullPath = displaySegments.join('/')
+      const q = normalizedSearch
+
+      if (node.type === TreeNodeType.Folder) {
+        if (!subtreeHasNameMatch(node, q)) {
+          return
+        }
+
+        const isEmptyFolder = node.children.length === 0
+        const childHasMatch = node.children.some((child) => subtreeHasNameMatch(child, q))
+        const expanded = isExpanded(pathKey) || childHasMatch
+
+        result.push({
+          key: pathKey,
+          name: node.name,
+          type: TreeNodeType.Folder,
+          node,
+          fullPath,
+          depth,
+          isEmptyFolder,
+          isSelected: selectedPath === fullPath,
+          isExpanded: expanded,
+          isToggleableFolder: !isEmptyFolder,
+          onToggle: isEmptyFolder ? undefined : () => toggleExpanded(pathKey),
+          onSelect: () => onSelectNode({ node, fullPath }),
+        })
+
+        if (!expanded) {
+          return
+        }
+
+        const orderedChildren = [...node.children].sort((left, right) => {
+          if (left.type !== right.type) {
+            return left.type === TreeNodeType.Folder ? -1 : 1
+          }
+          return asSortableName(left.name).localeCompare(asSortableName(right.name))
+        })
+
+        orderedChildren.forEach((child, childIndex) => {
+          if (!subtreeHasNameMatch(child, q)) {
+            return
+          }
+          const keySegment = `${child.name}::${childIndex}`
+          walkFiltered(
+            child,
+            depth + 1,
+            [...pathSegments, keySegment],
+            [...displaySegments, child.name],
+          )
+        })
+        return
+      }
+
+      if (node.name.toLowerCase().includes(q)) {
+        result.push({
+          key: pathKey,
+          name: node.name,
+          type: TreeNodeType.File,
+          node,
+          fullPath,
+          depth,
+          size: node.size,
+          isSelected: selectedPath === fullPath,
+          onSelect: () => onSelectNode({ node, fullPath }),
+        })
+      }
+    }
+
+    if (!normalizedSearch) {
+      walk(root, 0, [rootKey], [root.name])
+    } else {
+      walkFiltered(root, 0, [rootKey], [root.name])
+    }
     return result
-  }, [root, isExpanded, onSelectNode, selectedPath, toggleExpanded])
+  }, [
+    root,
+    isExpanded,
+    normalizedSearch,
+    onSelectNode,
+    selectedPath,
+    toggleExpanded,
+  ])
 
   const resolvedFocusedPath = useMemo(() => {
     if (rows.length === 0) {

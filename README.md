@@ -2,7 +2,7 @@
 
 **Repository:** [github.com/codeboguc/FileTreeExplorer](https://github.com/codeboguc/FileTreeExplorer)
 
-Internal-style **file tree explorer** for JSON that describes a directory layout. Paste or upload JSON, browse an expandable tree, open node details, and navigate with **React Router** URLs. The Home page includes a **reference layout** image (`/reference-layout.png`) for UI direction.
+Internal-style **file tree explorer** for JSON that describes a directory layout. Paste or upload JSON, browse an expandable tree, open node details, and navigate with **React Router** URLs.
 
 Clone (HTTPS or SSH):
 

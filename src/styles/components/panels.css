@@ -1,0 +1,78 @@
+/* -------------------------------------------------------------------------- */
+/* Panels — bordered cards with optional header (Explorer, Details, Home).     */
+/* -------------------------------------------------------------------------- */
+
+@layer components {
+  .panel-shell {
+    @apply rounded-lg border;
+    border-color: var(--panel-border);
+    background-color: var(--panel-bg);
+  }
+
+  .panel-header {
+    @apply flex items-center justify-between border-b px-3 py-2;
+    border-color: var(--panel-border);
+  }
+
+  .panel-title {
+    @apply text-sm font-semibold;
+    color: var(--text-primary);
+  }
+
+  /* Home — title + description + content (drop zone + browse) */
+  .home-import-panel {
+    @apply flex w-full min-w-0 flex-col;
+  }
+
+  .home-import-title {
+    @apply text-lg font-semibold tracking-tight;
+    color: var(--text-primary);
+  }
+
+  .home-import-description {
+    @apply mt-2 max-w-prose text-sm leading-relaxed;
+    color: var(--text-muted);
+  }
+
+  .home-import-content {
+    @apply mt-6 w-full min-w-0;
+  }
+
+  .home-import-footer {
+    @apply flex flex-wrap items-center gap-3 border-t pt-6;
+    border-color: var(--panel-border);
+  }
+
+  .json-import-dropzone-root {
+    @apply w-full;
+  }
+
+  .json-drop-zone {
+    @apply flex flex-col items-center justify-center gap-3 rounded-lg border-2 border-dashed px-6 py-10 text-center transition-colors;
+    border-color: var(--panel-border);
+    background-color: var(--toolbar-search-bg);
+  }
+
+  .json-drop-zone--active {
+    border-color: var(--focus-ring);
+    background-color: var(--row-hover);
+  }
+
+  .json-drop-zone-icon {
+    color: var(--text-muted);
+  }
+
+  .json-drop-zone--active .json-drop-zone-icon {
+    color: var(--selection-accent);
+  }
+
+  .json-drop-zone-text {
+    @apply text-sm;
+    color: var(--text-primary);
+  }
+
+  .json-drop-zone-hint {
+    @apply max-w-sm text-xs leading-relaxed;
+    color: var(--text-muted);
+  }
+}

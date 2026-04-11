@@ -34,5 +34,23 @@ export const useExpandedFolders = () => {
     setExpandedPaths(new Set([ROOT_PATH_KEY]))
   }, [])
 
-  return { isExpanded, toggleExpanded, resetExpanded }
+  /** Ensures folders with these internal path keys stay expanded (e.g. after selecting from Details). */
+  const expandPaths = useCallback((pathKeys: readonly string[]) => {
+    if (pathKeys.length === 0) {
+      return
+    }
+    setExpandedPaths((prev) => {
+      const next = new Set(prev)
+      let changed = false
+      for (const key of pathKeys) {
+        if (!next.has(key)) {
+          next.add(key)
+          changed = true
+        }
+      }
+      return changed ? next : prev
+    })
+  }, [])
+
+  return { isExpanded, toggleExpanded, resetExpanded, expandPaths }
 }

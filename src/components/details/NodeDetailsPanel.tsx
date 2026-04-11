@@ -2,6 +2,7 @@ import type { TreeNode } from '../../features/tree-explorer'
 import { TreeNodeType } from '../../lib/fileTree'
 import { Panel } from '../layout/Panel'
 import { DetailsMetaGrid } from './DetailsMetaGrid'
+import { DetailsPathLinks } from './DetailsPathLinks'
 import { FolderChildrenList } from './FolderChildrenList'
 
 type SelectionPayload = {
@@ -54,7 +55,10 @@ export function NodeDetailsPanel({ selected, onSelectPath }: NodeDetailsPanelPro
           items={[
             { label: 'Name', value: node.name },
             { label: 'Size', value: formatBytes(node.size) },
-            { label: 'Full path', value: <span className="font-mono">{fullPath}</span> },
+            {
+              label: 'Full path',
+              value: <DetailsPathLinks fullPath={fullPath} onSelectPath={onSelectPath} />,
+            },
           ]}
         />
       </Panel>
@@ -74,7 +78,10 @@ export function NodeDetailsPanel({ selected, onSelectPath }: NodeDetailsPanelPro
           { label: 'Name', value: node.name },
           { label: 'Direct children', value: node.children.length },
           { label: 'Subtree size', value: formatBytes(totalSubtreeSize) },
-          { label: 'Full path', value: <span className="font-mono">{fullPath}</span> },
+          {
+            label: 'Full path',
+            value: <DetailsPathLinks fullPath={fullPath} onSelectPath={onSelectPath} />,
+          },
         ]}
       />
 

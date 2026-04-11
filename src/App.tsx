@@ -1,7 +1,6 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   Link,
-  NavLink,
   Navigate,
   Route,
   Routes,
@@ -10,20 +9,23 @@ import {
 } from 'react-router-dom'
 import { NodeDetailsPanel } from './components/details'
 import { ExplorerPanel } from './components/explorer'
-import { FileImportHeaderControls } from './components/file'
-import { AppHeader } from './components/layout'
+import { JsonImportDropzone } from './components/file'
+import { AppToolbar } from './components/layout'
 import { useFileImport } from './features/file-import'
+import type { ImportStatusType } from './features/file-import'
 import type { TreeNode } from './features/tree-explorer'
 import { findNodeByRelativePath, type NodeSelection } from './lib/fileTree'
 
-type WorkspaceProps = {
+type TreeWorkspaceProps = {
   treeRoot: TreeNode | null
   selectedNode: NodeSelection | null
   setSelectedNode: (next: NodeSelection | null) => void
+  searchQuery: string
 }
+
 type ThemeMode = 'light' | 'dark'
 
-function TreeWorkspace({ treeRoot, selectedNode, setSelectedNode }: WorkspaceProps) {
+function TreeWorkspace({ treeRoot, selectedNode, setSelectedNode, searchQuery }: TreeWorkspaceProps) {
   const navigate = useNavigate()
 
   const handleSelectNode = (payload: NodeSelection) => {
@@ -51,18 +53,23 @@ function TreeWorkspace({ treeRoot, selectedNode, setSelectedNode }: WorkspacePro
   }
 
   return (
-    <section className="app-main-grid">
-      <ExplorerPanel
-        tree={treeRoot}
-        selectedPath={selectedNode?.fullPath ?? null}
-        onSelectNode={handleSelectNode}
-      />
-      <NodeDetailsPanel selected={selectedNode} onSelectPath={handleSelectDetailsPath} />
-    </section>
+    <div className="app-tree-workspace">
+      <section className="app-main-grid app-main-grid--split">
+        <ExplorerPanel
+          tree={treeRoot}
+          selectedPath={selectedNode?.fullPath ?? null}
+          onSelectNode={handleSelectNode}
+          searchQuery={searchQuery}
+        />
+        <NodeDetailsPanel selected={selectedNode} onSelectPath={handleSelectDetailsPath} />
+      </section>
+    </div>
   )
 }
 
-function TreeRoute({ treeRoot, selectedNode, setSelectedNode }: WorkspaceProps) {
+type TreeRouteProps = Omit<TreeWorkspaceProps, 'treeRoot'> & { treeRoot: TreeNode | null }
+
+function TreeRoute({ treeRoot, selectedNode, setSelectedNode, searchQuery }: TreeRouteProps) {
   if (!treeRoot) {
     return <Navigate to="/" replace />
   }
@@ -72,11 +79,12 @@ function TreeRoute({ treeRoot, selectedNode, setSelectedNode }: WorkspaceProps) 
       treeRoot={treeRoot}
       selectedNode={selectedNode}
       setSelectedNode={setSelectedNode}
+      searchQuery={searchQuery}
     />
   )
 }
 
-function TreeNodeRoute({ treeRoot, selectedNode, setSelectedNode }: WorkspaceProps) {
+function TreeNodeRoute({ treeRoot, selectedNode, setSelectedNode, searchQuery }: TreeRouteProps) {
   const params = useParams<{ nodePath: string }>()
   if (!treeRoot) {
     return <Navigate to="/" replace />
@@ -95,72 +103,73 @@ function TreeNodeRoute({ treeRoot, selectedNode, setSelectedNode }: WorkspacePro
       treeRoot={treeRoot}
       selectedNode={resolvedFromUrl ?? selectedNode}
       setSelectedNode={setSelectedNode}
+      searchQuery={searchQuery}
     />
   )
 }
 
-function HomeRoute() {
-  return (
-    <div className="space-y-4">
-      <section className="panel-shell p-4">
-        <h2 className="panel-title text-base">Home</h2>
-        <p className="mt-2 text-sm text-muted">
-          Import a JSON tree using header controls, then open the explorer view.
-        </p>
-        <Link to="/tree" className="btn-primary mt-4 inline-flex">
-          Open Tree View
-        </Link>
-      </section>
+type HomeRouteProps = {
+  selectedFileName: string | null
+  statusMessage: string
+  statusType: ImportStatusType
+  onFileSelect: (file: File | null) => void
+  hasLoadedTree: boolean
+}
 
-      <section className="panel-shell p-4" aria-labelledby="reference-layout-heading">
-        <h2 id="reference-layout-heading" className="reference-layout-section-title">
-          Reference layout
+function HomeRoute({
+  selectedFileName,
+  statusMessage,
+  statusType,
+  onFileSelect,
+  hasLoadedTree,
+}: HomeRouteProps) {
+  return (
+    <div className="app-home-content">
+      <section
+        className="panel-shell home-import-panel p-6 sm:p-8"
+        aria-labelledby="home-import-title"
+      >
+        <h2 id="home-import-title" className="home-import-title">
+          Import JSON tree
         </h2>
-        <p className="mt-2 text-sm text-muted">
-          Target UI: explorer sidebar, breadcrumbs, file metadata, and code preview (mock).
+        <p className="home-import-description">
+          Load a file that describes folders and files. After a successful import you go to the tree
+          explorer automatically. You can also use <strong className="text-primary">Load sample JSON</strong>{' '}
+          in the toolbar for a demo.
         </p>
-        <figure className="reference-layout-frame mt-4">
-          <img
-            src="/reference-layout.png"
-            alt="Reference file explorer: left tree with EXPLORER and storage footer; main area with breadcrumbs, file details card, and dark code preview"
-            className="reference-layout-image"
-            loading="lazy"
-            decoding="async"
+        <div className="home-import-content" aria-labelledby="home-import-title">
+          <JsonImportDropzone
+            selectedFileName={selectedFileName}
+            statusMessage={statusMessage}
+            statusType={statusType}
+            onFileSelect={onFileSelect}
           />
-          <figcaption className="reference-layout-caption">
-            Static mock for layout direction only; this app implements JSON-driven tree import
-            and navigation instead of live file I/O.
-          </figcaption>
-        </figure>
+        </div>
+        {hasLoadedTree ? (
+          <div className="home-import-footer">
+            <Link to="/tree" className="btn-primary inline-flex items-center gap-2">
+              Open tree explorer
+            </Link>
+            <span className="helper-text-xs">A valid tree is already loaded.</span>
+          </div>
+        ) : null}
       </section>
     </div>
   )
 }
 
-function RouteLinks() {
-  return (
-    <nav className="mb-3 flex items-center gap-2" aria-label="Primary routes">
-      <NavLink
-        to="/"
-        end
-        className={({ isActive }) => (isActive ? 'btn-primary' : 'btn-secondary')}
-      >
-        Home
-      </NavLink>
-      <NavLink
-        to="/tree"
-        className={({ isActive }) => (isActive ? 'btn-primary' : 'btn-secondary')}
-      >
-        Tree
-      </NavLink>
-    </nav>
-  )
-}
-
 function App() {
+  const navigate = useNavigate()
   const { state, handleFileSelect, handleLoadSample } = useFileImport()
   const [selectedNode, setSelectedNode] = useState<NodeSelection | null>(null)
   const [theme, setTheme] = useState<ThemeMode>('light')
+  const [searchQuery, setSearchQuery] = useState('')
+
+  useEffect(() => {
+    if (state.treeRoot !== null && state.statusType === 'success') {
+      navigate('/tree', { replace: true })
+    }
+  }, [navigate, state.statusType, state.treeRoot])
 
   const resolvedSelectedNode =
     selectedNode &&
@@ -171,47 +180,45 @@ function App() {
         ? { node: state.treeRoot, fullPath: state.treeRoot.name }
         : null
 
+  const treeRouteProps = {
+    treeRoot: state.treeRoot,
+    selectedNode: resolvedSelectedNode,
+    setSelectedNode,
+    searchQuery,
+  }
+
+  const homeRouteProps = {
+    selectedFileName: state.selectedFileName,
+    statusMessage: state.statusMessage,
+    statusType: state.statusType,
+    onFileSelect: handleFileSelect,
+    hasLoadedTree: state.treeRoot !== null,
+  }
+
   return (
     <main className={`app-shell ${theme === 'dark' ? 'theme-dark' : 'theme-light'}`}>
-      <AppHeader
-        theme={theme}
-        onThemeChange={setTheme}
-        rightSlot={
-          <FileImportHeaderControls
-            selectedFileName={state.selectedFileName}
-            statusMessage={state.statusMessage}
-            statusType={state.statusType}
-            onFileSelect={handleFileSelect}
-            onLoadSample={handleLoadSample}
-          />
-        }
-      />
-      <RouteLinks />
+      <div className="app-shell-pad-x">
+        <AppToolbar
+          theme={theme}
+          onThemeChange={setTheme}
+          showTreeSearch={state.treeRoot !== null}
+          searchQuery={searchQuery}
+          onSearchChange={setSearchQuery}
+          onLoadSample={handleLoadSample}
+          selectedFileName={state.selectedFileName}
+          statusMessage={state.statusMessage}
+          statusType={state.statusType}
+        />
+      </div>
 
-      <Routes>
-        <Route path="/" element={<HomeRoute />} />
-        <Route
-          path="/tree"
-          element={
-            <TreeRoute
-              treeRoot={state.treeRoot}
-              selectedNode={resolvedSelectedNode}
-              setSelectedNode={setSelectedNode}
-            />
-          }
-        />
-        <Route
-          path="/tree/:nodePath"
-          element={
-            <TreeNodeRoute
-              treeRoot={state.treeRoot}
-              selectedNode={resolvedSelectedNode}
-              setSelectedNode={setSelectedNode}
-            />
-          }
-        />
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
+      <div className="app-display app-shell-pad-x">
+        <Routes>
+          <Route path="/" element={<HomeRoute {...homeRouteProps} />} />
+          <Route path="/tree" element={<TreeRoute {...treeRouteProps} />} />
+          <Route path="/tree/:nodePath" element={<TreeNodeRoute {...treeRouteProps} />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </div>
     </main>
   )
 }

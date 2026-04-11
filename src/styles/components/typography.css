@@ -1,0 +1,30 @@
+/* -------------------------------------------------------------------------- */
+/* Text utilities — body emphasis, muted copy, import/status message colors.  */
+/* -------------------------------------------------------------------------- */
+
+@layer components {
+  .helper-text-xs {
+    @apply text-xs;
+    color: var(--text-muted);
+  }
+
+  .text-primary {
+    color: var(--text-primary);
+  }
+
+  .text-muted {
+    color: var(--text-muted);
+  }
+
+  .status-text-idle {
+    color: var(--text-muted);
+  }
+
+  .status-text-success {
+    color: var(--status-success);
+  }
+
+  .status-text-error {
+    color: var(--status-error);
+  }
+}

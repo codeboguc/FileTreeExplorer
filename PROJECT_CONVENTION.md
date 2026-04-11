@@ -19,7 +19,7 @@ React codebases usually avoid a single giant `components/` dump. Two ideas show 
 | **`components/`** | **Route-oriented or layout UI** grouped by domain: `layout/`, `explorer/`, `details/`, `file/`, `preview/`, `ui/`. Compose `features/` here rather than duplicating feature logic. |
 | **`lib/`**      | **App-wide, framework-agnostic** logic (tree model, Zod validation, path resolution). Unit tests live as `*.test.ts` next to the module (e.g. `fileTree.test.ts`). |
 | **`styles/`**   | Global Tailwind entry points and `@layer components` tokens (theme CSS variables). Prefer palette variables over hard-coded colors in JSX. |
-| **`assets/`**   | Static images/SVGs referenced from React. **`public/`** for files served by URL path (e.g. `file-tree-sample.json`, `reference-layout.png`). |
+| **`assets/`**   | Static images/SVGs referenced from React. **`public/`** for files served by URL path (e.g. `file-tree-sample.json`). |
 | **Imports**     | Prefer barrels (`features/tree-explorer`, `components/layout`) for stable paths; avoid deep `../../../` chains when an `index.ts` exists. |
 | **Tests**       | Jest + `ts-jest`; test files `src/**/*.test.ts`. App sources are excluded from the Jest TS project in `tsconfig.app.json`; Jest uses `tsconfig.jest.json`. |
 

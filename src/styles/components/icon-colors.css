@@ -1,0 +1,49 @@
+/* -------------------------------------------------------------------------- */
+/* File-type icon colors — map Lucide / tree node types to theme variables.    */
+/* -------------------------------------------------------------------------- */
+
+@layer components {
+  .icon-folder {
+    color: var(--icon-folder);
+  }
+
+  .icon-empty-folder {
+    color: var(--icon-empty-folder);
+  }
+
+  .icon-code {
+    color: var(--icon-code);
+  }
+
+  .icon-json {
+    color: var(--icon-json);
+  }
+
+  .icon-text {
+    color: var(--icon-text);
+  }
+
+  .icon-sheet {
+    color: var(--icon-sheet);
+  }
+
+  .icon-image {
+    color: var(--icon-image);
+  }
+
+  .icon-archive {
+    color: var(--icon-archive);
+  }
+
+  .icon-audio {
+    color: var(--icon-audio);
+  }
+
+  .icon-video {
+    color: var(--icon-video);
+  }
+
+  .icon-generic {
+    color: var(--icon-generic);
+  }
+}

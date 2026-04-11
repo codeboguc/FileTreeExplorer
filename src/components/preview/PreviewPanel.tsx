@@ -12,7 +12,7 @@ export function PreviewPanel({ imagePath }: PreviewPanelProps) {
     >
       <img
         src={imagePath}
-        alt="Reference layout for the preview panel"
+        alt="Preview"
         className="h-auto w-full rounded-md border"
         style={{ borderColor: 'var(--panel-border)' }}
       />

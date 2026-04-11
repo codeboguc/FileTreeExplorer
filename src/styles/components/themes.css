@@ -1,0 +1,75 @@
+/* -------------------------------------------------------------------------- */
+/* Design tokens — CSS custom properties per theme (.theme-light / .theme-dark). */
+/* Consumed by buttons, panels, tree rows, toolbar, icons, and typography.    */
+/* -------------------------------------------------------------------------- */
+
+@layer components {
+  .theme-light {
+    --app-bg: #f7f7f8;
+    --panel-bg: #ffffff;
+    /* Darker than zinc-200 for clearer edges on white panels / toolbar */
+    --panel-border: #a8adb8;
+    --text-primary: #111113;
+    --text-muted: #60646c;
+    --row-hover: #ececf0;
+    --row-selected: #dfdfe4;
+    --row-active: #d4d4dc;
+    --focus-ring: #4f46e5;
+    --selection-accent: #4f46e5;
+    --btn-secondary-bg: #ffffff;
+    --btn-secondary-border: #8f96a3;
+    --btn-secondary-text: #2f3135;
+    --btn-primary-bg: #1f1f23;
+    --btn-primary-border: #1f1f23;
+    --btn-primary-text: #fafafa;
+    --status-success: #166534;
+    --status-error: #b91c1c;
+    --icon-folder: #b45309;
+    --icon-empty-folder: #92400e;
+    --icon-code: #0369a1;
+    --icon-json: #047857;
+    --icon-text: #52525b;
+    --icon-sheet: #15803d;
+    --icon-image: #7c3aed;
+    --icon-archive: #c2410c;
+    --icon-audio: #be185d;
+    --icon-video: #4338ca;
+    --icon-generic: #52525b;
+    --toolbar-search-bg: #f4f4f5;
+    --toolbar-subtle-bg: #fafafa;
+  }
+
+  .theme-dark {
+    --app-bg: #0a0a0b;
+    --panel-bg: #111113;
+    --panel-border: #27272a;
+    --text-primary: #fafafa;
+    --text-muted: #c4c4cc;
+    --row-hover: #1f1f23;
+    --row-selected: #2a2a30;
+    --row-active: #34343b;
+    --focus-ring: #93c5fd;
+    --selection-accent: #60a5fa;
+    --btn-secondary-bg: #18181b;
+    --btn-secondary-border: #3a3a3f;
+    --btn-secondary-text: #e4e4e7;
+    --btn-primary-bg: #f5f5f5;
+    --btn-primary-border: #f5f5f5;
+    --btn-primary-text: #111113;
+    --status-success: #4ade80;
+    --status-error: #fda4af;
+    --icon-folder: #fbbf24;
+    --icon-empty-folder: #fcd34d;
+    --icon-code: #38bdf8;
+    --icon-json: #34d399;
+    --icon-text: #d4d4d8;
+    --icon-sheet: #86efac;
+    --icon-image: #c4b5fd;
+    --icon-archive: #fdba74;
+    --icon-audio: #f9a8d4;
+    --icon-video: #a5b4fc;
+    --icon-generic: #d4d4d8;
+    --toolbar-search-bg: #18181b;
+    --toolbar-subtle-bg: #141416;
+  }
+}
