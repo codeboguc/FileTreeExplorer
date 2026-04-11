@@ -28,6 +28,20 @@
     color: var(--text-primary);
   }
 
+  .app-toolbar-title-link {
+    @apply inline-block select-none rounded-sm no-underline transition-opacity;
+    color: inherit;
+  }
+
+  .app-toolbar-title-link:hover {
+    opacity: 0.88;
+  }
+
+  .app-toolbar-title-link:focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
+  }
+
   .app-toolbar-search-field {
     @apply flex min-h-[42px] w-full min-w-0 flex-1 items-center gap-2 rounded-lg border px-3 py-1.5 transition-shadow;
     border-color: var(--panel-border);

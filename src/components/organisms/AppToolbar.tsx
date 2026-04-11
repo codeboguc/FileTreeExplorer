@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import type { ImportStatusTone } from '../molecules/import-status'
 import { LoadSampleToolbarButton } from '../molecules/LoadSampleToolbarButton'
 import { ThemeToggle, type ToolbarThemeMode } from '../molecules/ThemeToggle'
@@ -34,7 +35,11 @@ export function AppToolbar({
     <header className="app-toolbar">
       <div className="app-toolbar-main">
         <div className="app-toolbar-brand">
-          <h1 className="app-toolbar-title">FileTree Explorer</h1>
+          <h1 className="m-0">
+            <Link to="/" className="app-toolbar-title app-toolbar-title-link">
+              FileTree Explorer
+            </Link>
+          </h1>
         </div>
 
         <ToolbarSearchField
