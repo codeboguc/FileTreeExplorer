@@ -1,6 +1,6 @@
-import type { TreeNode } from '../../features/tree-explorer'
-import { NodeIcon } from '../../features/tree-explorer'
-import { TreeNodeType } from '../../lib/fileTree'
+import { TreeNodeType } from '../../../../lib/fileTree'
+import type { TreeNode } from '../../types'
+import { NodeIcon } from '../NodeIcon'
 
 type FolderChildrenListProps = {
   childrenNodes: TreeNode[]

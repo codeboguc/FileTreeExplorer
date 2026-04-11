@@ -1,3 +1,6 @@
+export { ExplorerPanel } from './components/ExplorerPanel'
 export { NodeIcon } from './components/NodeIcon'
 export { TreeExplorer } from './components/TreeExplorer'
+export { TreeWorkspaceView } from './components/TreeWorkspaceView'
+export { NodeDetailsPanel } from './components/details'
 export type { FileNode, FolderNode, TreeNode } from './types'

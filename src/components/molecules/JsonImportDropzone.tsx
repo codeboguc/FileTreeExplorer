@@ -1,11 +1,11 @@
 import { FileJson, Upload } from 'lucide-react'
 import { useCallback, useRef, useState, type DragEvent } from 'react'
-import type { ImportStatusType } from '../../features/file-import'
+import type { ImportStatusTone } from './import-status'
 
 type JsonImportDropzoneProps = {
   selectedFileName: string | null
   statusMessage: string
-  statusType: ImportStatusType
+  statusType: ImportStatusTone
   onFileSelect: (file: File | null) => void
 }
 
@@ -78,10 +78,7 @@ export function JsonImportDropzone({
     [handleFile],
   )
 
-  const dropZoneClass = [
-    'json-drop-zone',
-    isDragActive ? 'json-drop-zone--active' : '',
-  ]
+  const dropZoneClass = ['json-drop-zone', isDragActive ? 'json-drop-zone--active' : '']
     .filter(Boolean)
     .join(' ')
 
@@ -98,7 +95,9 @@ export function JsonImportDropzone({
         <p className="json-drop-zone-text">
           Drag and drop a <span className="font-medium">.json</span> file here
         </p>
-        <p className="json-drop-zone-hint">Tree format: root object or array of nodes with name, type, and children.</p>
+        <p className="json-drop-zone-hint">
+          Tree format: root object or array of nodes with name, type, and children.
+        </p>
         <button
           type="button"
           className="btn-primary inline-flex items-center gap-2"

@@ -1,8 +1,8 @@
-import type { TreeNode } from '../../features/tree-explorer'
-import { TreeNodeType } from '../../lib/fileTree'
-import { Panel } from '../layout/Panel'
-import { DetailsMetaGrid } from './DetailsMetaGrid'
-import { DetailsPathLinks } from './DetailsPathLinks'
+import { DetailsMetaGrid } from '../../../../components/molecules/DetailsMetaGrid'
+import { DetailsPathLinks } from '../../../../components/molecules/DetailsPathLinks'
+import { Panel } from '../../../../components/organisms/Panel'
+import { TreeNodeType } from '../../../../lib/fileTree'
+import type { TreeNode } from '../../types'
 import { FolderChildrenList } from './FolderChildrenList'
 
 type SelectionPayload = {

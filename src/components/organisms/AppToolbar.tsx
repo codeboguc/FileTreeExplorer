@@ -1,6 +1,6 @@
 import { FileJson, Moon, Search, Sun } from 'lucide-react'
 import { useEffect, useMemo, useRef } from 'react'
-import type { ImportStatusType } from '../../features/file-import'
+import type { ImportStatusTone } from '../molecules/import-status'
 
 type ThemeMode = 'light' | 'dark'
 
@@ -14,7 +14,7 @@ export type AppToolbarProps = {
   onLoadSample: () => void
   selectedFileName: string | null
   statusMessage: string
-  statusType: ImportStatusType
+  statusType: ImportStatusTone
 }
 
 export function AppToolbar({

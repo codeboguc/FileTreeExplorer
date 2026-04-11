@@ -1,10 +1,10 @@
 import { useRef } from 'react'
-import type { ImportStatusType } from '../../features/file-import'
+import type { ImportStatusTone } from './import-status'
 
 type ImportLeftStackProps = {
   selectedFileName: string | null
   statusMessage: string
-  statusType: ImportStatusType
+  statusType: ImportStatusTone
   onFileSelect: (file: File | null) => void
   className?: string
 }

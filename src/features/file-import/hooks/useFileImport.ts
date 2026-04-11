@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { getSampleTreeUrl, loadSampleTreeJson } from '../../../services/loadSampleTreeJson'
 import type { ImportState } from '../types'
 import { parseAndValidateTree } from '../utils/parseAndValidateTree'
 
@@ -59,18 +60,13 @@ export const useFileImport = () => {
   }
 
   const handleLoadSample = () => {
-    const samplePath = '/file-tree-sample.json'
+    const samplePath = getSampleTreeUrl()
 
     void (async () => {
       try {
-        const response = await fetch(samplePath)
-        if (!response.ok) {
-          throw new Error(`HTTP ${response.status}`)
-        }
-
-        const sampleText = await response.text()
-        setState((prev) => ({ ...prev, selectedFileName: 'file-tree-sample.json' }))
-        applyJsonText('file-tree-sample.json', sampleText)
+        const { text, filename } = await loadSampleTreeJson()
+        setState((prev) => ({ ...prev, selectedFileName: filename }))
+        applyJsonText(filename, text)
       } catch {
         setState((prev) => ({
           ...prev,

@@ -1,5 +1,6 @@
-import { TreeExplorer, type TreeNode } from '../../features/tree-explorer'
-import { Panel } from '../layout/Panel'
+import { Panel } from '../../../components/organisms/Panel'
+import { TreeExplorer } from './TreeExplorer'
+import type { TreeNode } from '../types'
 
 type ExplorerPanelProps = {
   tree: TreeNode | null
