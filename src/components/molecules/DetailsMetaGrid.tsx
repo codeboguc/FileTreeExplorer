@@ -1,3 +1,4 @@
+import { DetailsMetaRow } from '@/components/atoms/DetailsMetaRow'
 import type { ReactNode } from 'react'
 
 type DetailsMetaItem = {
@@ -16,10 +17,7 @@ export function DetailsMetaGrid({ items, className }: DetailsMetaGridProps) {
   return (
     <dl className={classes}>
       {items.map((item) => (
-        <div key={item.label} className="details-meta-row">
-          <dt className="text-muted font-medium">{item.label}</dt>
-          <dd className="text-primary">{item.value}</dd>
-        </div>
+        <DetailsMetaRow key={item.label} label={item.label} value={item.value} />
       ))}
     </dl>
   )

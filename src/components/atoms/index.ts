@@ -1,4 +1,12 @@
-/** Atomic primitives — extend with design-system building blocks as needed. */
+/** Atomic primitives — smallest reusable UI and non-domain helpers. */
+export { DetailsMetaRow } from '@/components/atoms/DetailsMetaRow'
 export { EllipsisHoverTitle } from '@/components/atoms/EllipsisHoverTitle'
+export { HiddenJsonFileInput } from '@/components/atoms/HiddenJsonFileInput'
 export { IconButton } from '@/components/atoms/IconButton'
+export { ImportSessionStatus } from '@/components/atoms/ImportSessionStatus'
 export { KbdHint } from '@/components/atoms/KbdHint'
+export { LanguageSwitcher } from '@/components/atoms/LanguageSwitcher'
+export { SectionDividerLabel } from '@/components/atoms/SectionDividerLabel'
+export { TreeSearchHitButton } from '@/components/atoms/TreeSearchHitButton'
+export type { ImportStatusTone } from '@/components/atoms/importStatus'
+export { importStatusClassName } from '@/components/atoms/importStatus'

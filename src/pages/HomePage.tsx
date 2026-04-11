@@ -1,42 +1,54 @@
 import { JsonImportDropzone } from '@/components/molecules/JsonImportDropzone'
 import { useWorkspace } from '@/contexts'
+import { Trans, useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 
 export function HomePage() {
-  const { state, handleFileSelect } = useWorkspace()
+  const { t } = useTranslation()
+  const { state, handleFileSelect, handleImportPastedJson, importSuccessTick } =
+    useWorkspace()
 
   return (
     <div className="app-home-content">
-      <section
-        className="panel-shell home-import-panel p-6 sm:p-8"
-        aria-labelledby="home-import-title"
-      >
-        <h2 id="home-import-title" className="home-import-title">
-          Import JSON tree
-        </h2>
-        <p className="home-import-description">
-          Load a file that describes folders and files. After a successful import you go
-          to the tree explorer automatically. You can also use{' '}
-          <strong className="text-primary">Load sample JSON</strong> in the toolbar for a
-          demo.
-        </p>
-        {state.treeRoot !== null ? (
-          <div className="home-import-tree-cta">
-            <Link to="/tree" className="btn-primary inline-flex items-center gap-2">
-              Open tree explorer
-            </Link>
-            <span className="helper-text-xs">A valid tree is already loaded.</span>
+      <div className="app-home-main-scroll">
+        <section
+          className="panel-shell home-import-panel w-full min-w-0 p-6 sm:p-8"
+          aria-labelledby="home-import-title"
+        >
+          <h2 id="home-import-title" className="home-import-title">
+            {t('home.importTitle')}
+          </h2>
+          <div className="home-import-description-block">
+            <p className="home-import-description">{t('home.descriptionLine1')}</p>
+            <p className="home-import-description">
+              <Trans
+                i18nKey="home.descriptionLine2"
+                components={{
+                  1: <strong className="text-primary" />,
+                }}
+              />
+            </p>
           </div>
-        ) : null}
-        <div className="home-import-content" aria-labelledby="home-import-title">
-          <JsonImportDropzone
-            selectedFileName={state.selectedFileName}
-            statusMessage={state.statusMessage}
-            statusType={state.statusType}
-            onFileSelect={handleFileSelect}
-          />
-        </div>
-      </section>
+          {state.treeRoot !== null ? (
+            <div className="home-import-tree-cta">
+              <Link to="/tree" className="btn-primary inline-flex items-center gap-2">
+                {t('home.openTreeExplorer')}
+              </Link>
+              <span className="helper-text-xs">{t('home.treeAlreadyLoaded')}</span>
+            </div>
+          ) : null}
+          <div className="home-import-content" aria-labelledby="home-import-title">
+            <JsonImportDropzone
+              key={importSuccessTick}
+              selectedFileName={state.selectedFileName}
+              statusMessage={state.statusMessage}
+              statusType={state.statusType}
+              onFileSelect={handleFileSelect}
+              onImportPastedJson={handleImportPastedJson}
+            />
+          </div>
+        </section>
+      </div>
     </div>
   )
 }

@@ -10,6 +10,7 @@ import {
 } from '@/lib/fileTree'
 import { GripVertical } from 'lucide-react'
 import { useRef, type CSSProperties } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
 type TreeWorkspaceViewProps = {
@@ -23,6 +24,7 @@ export function TreeWorkspaceView({
   selectedNode,
   setSelectedNode,
 }: TreeWorkspaceViewProps) {
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const workspaceRef = useRef<HTMLDivElement>(null)
   const { explorerWidthPx, explorerMaxAllowedPx, separatorProps } =
@@ -74,7 +76,7 @@ export function TreeWorkspaceView({
           className="app-split-pane-handle"
           role="separator"
           aria-orientation="vertical"
-          aria-label="Resize explorer and details panels"
+          aria-label={t('explorer.resizeHandle')}
           aria-valuenow={Math.round(explorerWidthPx)}
           aria-valuemin={220}
           aria-valuemax={Math.round(explorerMaxAllowedPx)}

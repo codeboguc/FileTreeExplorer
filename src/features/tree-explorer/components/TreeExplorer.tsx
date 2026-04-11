@@ -318,7 +318,7 @@ export function TreeExplorer({ root, selectedPath, onSelectNode }: TreeExplorerP
         try {
           row = scroller.querySelector(
             `[data-tree-path="${CSS.escape(selectedPath)}"]`,
-          ) as HTMLLIElement | null
+          )
         } catch {
           return
         }

@@ -1,0 +1,8 @@
+{
+  "name": "root",
+  "type": "folder",
+  "children": [
+    { "name": "dup.txt", "type": "file", "size": 1 },
+    { "name": "dup.txt", "type": "file", "size": 2 }
+  ]
+}

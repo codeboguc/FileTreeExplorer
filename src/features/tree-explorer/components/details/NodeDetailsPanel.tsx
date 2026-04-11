@@ -7,6 +7,7 @@ import type { TreeNode } from '@/features/tree-explorer/types'
 import type { ReactNode } from 'react'
 import { formatBytes } from '@/lib'
 import { formatNodePathForDisplay, TreeNodeType } from '@/lib/fileTree'
+import { useTranslation } from 'react-i18next'
 
 type SelectionPayload = {
   node: TreeNode
@@ -30,13 +31,13 @@ function DetailsPanelInner({ children }: { children: ReactNode }) {
 }
 
 export function NodeDetailsPanel({ selected, onSelectPath }: NodeDetailsPanelProps) {
+  const { t } = useTranslation()
+
   if (!selected) {
     return (
-      <Panel title="Details" className="h-full min-h-0" fillScrollBody>
+      <Panel title={t('details.panelEmpty')} className="h-full min-h-0" fillScrollBody>
         <DetailsPanelInner>
-          <p className="text-muted text-sm">
-            Select a node in Explorer to see file or folder details.
-          </p>
+          <p className="text-muted text-sm">{t('details.selectPrompt')}</p>
         </DetailsPanelInner>
       </Panel>
     )
@@ -48,7 +49,7 @@ export function NodeDetailsPanel({ selected, onSelectPath }: NodeDetailsPanelPro
   if (node.type === TreeNodeType.File) {
     return (
       <Panel
-        title="File Details"
+        title={t('details.panelFile')}
         className="h-full min-h-0"
         fillScrollBody
         rightSlot={<DetailsPanelHeaderPath pathForDisplay={pathForDisplay} />}
@@ -56,10 +57,10 @@ export function NodeDetailsPanel({ selected, onSelectPath }: NodeDetailsPanelPro
         <DetailsPanelInner>
           <DetailsMetaGrid
             items={[
-              { label: 'Name', value: node.name },
-              { label: 'Size', value: formatBytes(node.size) },
+              { label: t('details.name'), value: node.name },
+              { label: t('details.size'), value: formatBytes(node.size) },
               {
-                label: 'Full path',
+                label: t('details.fullPath'),
                 value: <DetailsPathLinks fullPath={fullPath} onSelectPath={onSelectPath} />,
               },
             ]}
@@ -73,7 +74,7 @@ export function NodeDetailsPanel({ selected, onSelectPath }: NodeDetailsPanelPro
 
   return (
     <Panel
-      title="Folder Details"
+      title={t('details.panelFolder')}
       className="h-full min-h-0"
       fillScrollBody
       rightSlot={<DetailsPanelHeaderPath pathForDisplay={pathForDisplay} />}
@@ -82,18 +83,18 @@ export function NodeDetailsPanel({ selected, onSelectPath }: NodeDetailsPanelPro
         <DetailsMetaGrid
           className="mb-4"
           items={[
-            { label: 'Name', value: node.name },
-            { label: 'Direct children', value: node.children.length },
-            { label: 'Subtree size', value: formatBytes(totalSubtreeSize) },
+            { label: t('details.name'), value: node.name },
+            { label: t('details.directChildren'), value: node.children.length },
+            { label: t('details.subtreeSize'), value: formatBytes(totalSubtreeSize) },
             {
-              label: 'Full path',
+              label: t('details.fullPath'),
               value: <DetailsPathLinks fullPath={fullPath} onSelectPath={onSelectPath} />,
             },
           ]}
         />
 
         <div className="text-left">
-          <p className="details-section-label">Children</p>
+          <p className="details-section-label">{t('details.childrenHeading')}</p>
           <FolderChildrenList
             childrenNodes={node.children}
             fullPath={fullPath}

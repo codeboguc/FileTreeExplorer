@@ -1,8 +1,9 @@
-import { EllipsisHoverTitle } from '@/components/atoms/EllipsisHoverTitle'
 import { KbdHint } from '@/components/atoms/KbdHint'
+import { TreeSearchHitButton } from '@/components/atoms/TreeSearchHitButton'
 import { formatNodePathForDisplay } from '@/lib/fileTree'
 import { Search } from 'lucide-react'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 /** Scrollbar + capped height only when there are more than this many hits. */
 const SEARCH_DROPDOWN_SCROLL_AFTER_COUNT = 7
@@ -31,6 +32,7 @@ export function ToolbarTreeSearch({
   results,
   onSelectHit,
 }: ToolbarTreeSearchProps) {
+  const { t } = useTranslation()
   const inputRef = useRef<HTMLInputElement>(null)
   const blurTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const [isFocused, setIsFocused] = useState(false)
@@ -40,10 +42,12 @@ export function ToolbarTreeSearch({
 
   const searchShortcutLabel = useMemo(() => {
     if (typeof navigator === 'undefined') {
-      return 'Ctrl+Alt+F'
+      return t('toolbar.searchShortcutWin')
     }
-    return /Mac|iPhone|iPad/i.test(navigator.userAgent) ? '⌃⌥F' : 'Ctrl+Alt+F'
-  }, [])
+    return /Mac|iPhone|iPad/i.test(navigator.userAgent)
+      ? t('toolbar.searchShortcutMac')
+      : t('toolbar.searchShortcutWin')
+  }, [t])
 
   const cancelBlurClose = useCallback(() => {
     if (blurTimeoutRef.current !== null) {
@@ -105,7 +109,7 @@ export function ToolbarTreeSearch({
       <div className="app-toolbar-search-field">
         <Search className="app-toolbar-search-icon size-4" aria-hidden />
         <label className="sr-only" htmlFor={id}>
-          Search tree by name
+          {t('toolbar.searchLabel')}
         </label>
         <input
           ref={inputRef}
@@ -116,7 +120,7 @@ export function ToolbarTreeSearch({
           aria-controls={`${id}-listbox`}
           aria-autocomplete="list"
           className="app-toolbar-search"
-          placeholder="Search files and folders…"
+          placeholder={t('toolbar.searchPlaceholder')}
           value={value}
           onChange={(e) => onChange(e.target.value)}
           onFocus={() => {
@@ -133,7 +137,7 @@ export function ToolbarTreeSearch({
           }}
           autoComplete="off"
         />
-        <KbdHint title="Focus search (Ctrl+Alt+F; on Mac: Control+Option+F)" aria-hidden>
+        <KbdHint title={t('toolbar.searchKbdTitle')} aria-hidden>
           {searchShortcutLabel}
         </KbdHint>
       </div>
@@ -147,36 +151,22 @@ export function ToolbarTreeSearch({
               ? 'app-toolbar-search-dropdown app-toolbar-search-dropdown--scrollable'
               : 'app-toolbar-search-dropdown'
           }
-          aria-label="Search results"
+          aria-label={t('toolbar.searchResultsLabel')}
         >
           {results.length === 0 ? (
             <li className="app-toolbar-search-dropdown-empty" role="presentation">
-              No matches
+              {t('toolbar.searchNoMatches')}
             </li>
           ) : (
             results.map((hit) => {
               const pathLabel = formatNodePathForDisplay(hit.fullPath)
               return (
                 <li key={hit.fullPath} role="presentation">
-                  <button
-                    type="button"
-                    role="option"
-                    className="app-toolbar-search-dropdown-item"
-                    aria-label={`${hit.name}, ${pathLabel}`}
-                    onMouseDown={(e) => {
-                      e.preventDefault()
-                      handleSelectHit(hit.fullPath)
-                    }}
-                  >
-                    <EllipsisHoverTitle
-                      text={hit.name}
-                      className="app-toolbar-search-dropdown-name"
-                    />
-                    <EllipsisHoverTitle
-                      text={pathLabel}
-                      className="app-toolbar-search-dropdown-path"
-                    />
-                  </button>
+                  <TreeSearchHitButton
+                    name={hit.name}
+                    pathLabel={pathLabel}
+                    onPick={() => handleSelectHit(hit.fullPath)}
+                  />
                 </li>
               )
             })

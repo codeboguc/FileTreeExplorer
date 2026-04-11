@@ -1,0 +1,7 @@
+{
+  "name": "root",
+  "type": "folder",
+  "children": [
+    { "name": "bad.bin", "type": "file", "size": -10 }
+  ]
+}

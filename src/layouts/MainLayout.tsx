@@ -3,12 +3,14 @@ import { useWorkspace } from '@/contexts'
 import { searchTreeByName } from '@/features/tree-explorer/utils/searchTreeByName'
 import { encodeRelativeTreePathForUrl, findNodeByRelativePath } from '@/lib/fileTree'
 import { useCallback, useMemo } from 'react'
-import { Outlet, useNavigate } from 'react-router-dom'
+import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 
 const TREE_SEARCH_MAX_RESULTS = 10
 
 export function MainLayout() {
   const navigate = useNavigate()
+  const location = useLocation()
+  const importStatusShownOnHomePage = location.pathname === '/'
   const {
     theme,
     setTheme,
@@ -67,6 +69,7 @@ export function MainLayout() {
           selectedFileName={state.selectedFileName}
           statusMessage={state.statusMessage}
           statusType={state.statusType}
+          suppressFooterSessionStatus={importStatusShownOnHomePage}
         />
       </div>
 

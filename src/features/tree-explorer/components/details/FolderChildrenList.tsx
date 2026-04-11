@@ -3,6 +3,7 @@ import type { TreeNode } from '@/features/tree-explorer/types'
 import { formatBytes } from '@/lib'
 import { sortTreeChildrenForDisplay, TreeNodeType } from '@/lib/fileTree'
 import { useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 
 type FolderChildrenListProps = {
   childrenNodes: TreeNode[]
@@ -15,13 +16,14 @@ export function FolderChildrenList({
   fullPath,
   onSelectPath,
 }: FolderChildrenListProps) {
+  const { t } = useTranslation()
   const sortedChildren = useMemo(
     () => sortTreeChildrenForDisplay(childrenNodes),
     [childrenNodes],
   )
 
   if (sortedChildren.length === 0) {
-    return <p className="text-left text-muted text-sm">This folder has no children.</p>
+    return <p className="text-left text-muted text-sm">{t('details.folderEmpty')}</p>
   }
 
   return (

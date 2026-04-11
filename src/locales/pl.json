@@ -1,0 +1,79 @@
+{
+  "app": {
+    "title": "FileTree Explorer",
+    "documentTitle": "FileTree Explorer"
+  },
+  "home": {
+    "importTitle": "Import drzewa JSON",
+    "descriptionLine1": "Wczytaj JSON opisujący foldery i pliki. Po poprawnym imporcie przejdziesz do eksploratora drzewa.",
+    "descriptionLine2": "Możesz też użyć <1>Wczytaj przykładowy JSON</1> na pasku narzędzi w dowolnym momencie.",
+    "openTreeExplorer": "Otwórz eksplorator drzewa",
+    "treeAlreadyLoaded": "Poprawne drzewo jest już wczytane."
+  },
+  "toolbar": {
+    "loadSample": "Wczytaj przykładowy JSON",
+    "footerHintHome": "Użyj <1>Wczytaj przykładowy JSON</1> powyżej albo panelu importu na tej stronie (przeciągnij i upuść, wybierz plik lub wklej). Status importu i błędy walidacji pojawiają się pod polem wklejania.",
+    "footerHintDefault": "Wczytaj przykładowy JSON powyżej lub otwórz Stronę główną, aby zaimportować własny plik. Plik sesji i status są po prawej.",
+    "filePrefix": "Plik: {{name}}",
+    "noCustomFileLoaded": "Brak wczytanego własnego pliku JSON",
+    "searchLabel": "Szukaj w drzewie po nazwie",
+    "searchPlaceholder": "Szukaj plików i folderów…",
+    "searchKbdTitle": "Fokus wyszukiwania (Ctrl+Alt+F; na Macu: Control+Option+F)",
+    "searchResultsLabel": "Wyniki wyszukiwania",
+    "searchNoMatches": "Brak dopasowań",
+    "searchShortcutWin": "Ctrl+Alt+F",
+    "searchShortcutMac": "⌃⌥F"
+  },
+  "import": {
+    "idleHint": "Zaimportuj plik JSON, aby zwalidować i wyświetlić eksplorator plików.",
+    "restored": "Przywrócono „{{name}}” z pamięci przeglądarki.",
+    "loadedOk": "„{{name}}” jest poprawny i został wczytany.",
+    "readFileFailed": "Nie udało się odczytać pliku „{{name}}”.",
+    "sampleLoadFailed": "Nie udało się wczytać pliku przykładowego z „{{path}}”.",
+    "invalidJsonFile": "„{{name}}” nie jest poprawnym plikiem JSON.",
+    "dropTitle": "Przeciągnij i upuść plik <1>.json</1> tutaj",
+    "dropHint": "Format drzewa: obiekt główny lub tablica węzłów z name, type i children.",
+    "browseFile": "Wybierz plik JSON",
+    "selectedFile": "Wybrano: {{name}}",
+    "noFileSelectedYet": "Nie wybrano pliku",
+    "dividerPaste": "albo wklej JSON poniżej",
+    "pasteLabel": "Wklej ze schowka",
+    "pastePlaceholder": "{ \"name\": \"root\", \"type\": \"folder\", \"children\": [] }",
+    "loadPasted": "Wczytaj wklejony JSON",
+    "pasteHint": "Ta sama walidacja co przy uploadzie (schema Zod, potem korzeń workspace).",
+    "chooseFile": "Wybierz plik JSON",
+    "noFileSelected": "Nie wybrano pliku",
+    "loadSampleShort": "Wczytaj przykład"
+  },
+  "explorer": {
+    "panelTitle": "Eksplorator",
+    "emptyState": "Nie wczytano jeszcze zwalidowanego drzewa. Użyj „Wczytaj przykładowy JSON” na pasku lub zaimportuj plik ze Strony głównej.",
+    "resizeHandle": "Zmień szerokość eksploratora i panelu szczegółów"
+  },
+  "details": {
+    "panelEmpty": "Szczegóły",
+    "panelFile": "Szczegóły pliku",
+    "panelFolder": "Szczegóły folderu",
+    "selectPrompt": "Wybierz węzeł w Eksploratorze, aby zobaczyć szczegóły pliku lub folderu.",
+    "name": "Nazwa",
+    "size": "Rozmiar",
+    "fullPath": "Pełna ścieżka",
+    "directChildren": "Bezpośrednie dzieci",
+    "subtreeSize": "Rozmiar poddrzewa",
+    "childrenHeading": "Dzieci",
+    "folderEmpty": "Ten folder nie ma dzieci.",
+    "copyPathAria": "Kopiuj ścieżkę: {{path}}",
+    "copyPathCopiedAria": "Ścieżka skopiowana do schowka",
+    "copyPathTitle": "Kopiuj ścieżkę do schowka",
+    "copiedTitle": "Skopiowano"
+  },
+  "theme": {
+    "switchToLight": "Przełącz na jasny motyw",
+    "switchToDark": "Przełącz na ciemny motyw"
+  },
+  "language": {
+    "switchToEn": "English",
+    "switchToPl": "Polski",
+    "groupLabel": "Język interfejsu"
+  }
+}
