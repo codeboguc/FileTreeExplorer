@@ -25,6 +25,15 @@ npm run dev
 
 Open the URL shown in the terminal (usually `http://localhost:5173`).
 
+## Manual verification
+
+Smoke-tested locally (dev server and `npm run preview`) on:
+
+- **OS:** Windows 11 (x64)
+- **Browser:** Google Chrome (current stable channel)
+
+Other browsers and operating systems were not part of this manual pass.
+
 ## Scripts
 
 | Command                | Description                                 |
@@ -85,6 +94,17 @@ Node paths use a **splat** route (`tree/*`) with **per-segment encoding** so pat
 - **Error boundary** around routed content so one render error doesn’t blank the whole shell.
 - **Full i18n for validation**: stable error codes from **`lib/fileTree`** (or Zod) and **`t()`** only in the UI/hook layer, so Polish UI doesn’t mix with English-only schema messages, and parsers stay usable without initialising i18n (e.g. tests, workers).
 - **Locale-aware numbers** for sizes and counts (**`Intl.NumberFormat`**) aligned with the active UI language instead of fixed `"."` / `","` rules in **`formatBytes`**.
+
+---
+
+## More testing (if I had more time)
+
+- **Broader manual matrix:** Firefox, Safari, and Microsoft Edge on Windows; at least one smoke run on **macOS** and a mainstream **Linux** desktop to catch layout, font, and `localStorage` quirks.
+- **Viewport and input:** repeatable checks for narrow/mobile widths, keyboard-only flows, and high zoom levels (not just a single desktop resolution).
+- **Automated coverage beyond Jest:** component tests (e.g. React Testing Library) for import status and toolbar search; contract tests for URL encoding vs `lib/fileTree` helpers so routing and parsing stay aligned.
+- **Accessibility tooling:** axe or similar in CI, plus a short screen-reader pass on tree navigation and the import panel.
+- **Visual regression** (e.g. Chromatic, Lost Pixel) for theme light/dark and both locales so CSS changes do not slip through unnoticed.
+- **Performance / stress:** scripted runs against `file-tree-stress.json` (or larger) to measure time-to-interactive and scroll cost, as a guard once virtualisation exists.
 
 ---
 
