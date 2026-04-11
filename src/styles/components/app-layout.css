@@ -4,7 +4,7 @@
 
 @layer components {
   .app-shell {
-    @apply mx-auto flex min-h-screen w-full max-w-[1400px] flex-col py-5;
+    @apply mx-auto flex h-full min-h-0 w-full max-w-[1400px] flex-1 flex-col gap-2 overflow-hidden py-2 md:gap-2 md:py-3;
     background-color: var(--app-bg);
     color: var(--text-primary);
   }
@@ -14,12 +14,12 @@
   }
 
   .app-display {
-    @apply flex min-h-0 flex-1 flex-col;
+    @apply flex min-h-0 flex-1 flex-col overflow-hidden;
   }
 
   /* Home (and similar): one column under the toolbar */
   .app-home-content {
-    @apply flex w-full max-w-full flex-col gap-4;
+    @apply flex min-h-0 w-full max-w-full flex-1 flex-col gap-4 overflow-auto;
   }
 
   /* Tree workspace: explorer + details side by side from lg up */
@@ -28,10 +28,90 @@
   }
 
   .app-main-grid {
-    @apply grid min-h-[70vh] w-full gap-4;
+    @apply grid w-full flex-1 min-h-0 gap-4;
+    grid-auto-rows: minmax(0, 1fr);
   }
 
   .app-main-grid--split {
     @apply grid-cols-1 lg:grid-cols-[320px_minmax(0,1fr)];
+  }
+
+  /* Let explorer/details shrink below content min-width so truncate / wrap can win */
+  .app-main-grid--split > * {
+    @apply min-w-0;
+  }
+
+  /* Resizable explorer | handle | details (lg+). Below lg the handle is display:none. */
+  .app-main-grid--split-resizable {
+    @apply grid-cols-1;
+  }
+
+  @media (min-width: 1024px) {
+    /* Tighter horizontal rhythm than default `gap-4` on `.app-main-grid` */
+    .app-main-grid--split-resizable {
+      @apply gap-x-2 gap-y-4;
+      grid-template-columns: var(--explorer-pane-px, 320px) 8px minmax(
+          var(--details-pane-min-px, 280px),
+          1fr
+        );
+    }
+  }
+
+  .app-main-grid--split-resizable > * {
+    @apply h-full min-h-0 min-w-0;
+  }
+
+  .app-split-pane-handle {
+    @apply hidden touch-none select-none lg:flex;
+    width: 8px;
+    margin-inline: -2px;
+    align-items: center;
+    justify-content: center;
+    justify-self: center;
+    overflow: visible;
+    border-radius: 4px;
+    cursor: col-resize;
+    background-color: transparent;
+    transition: background-color 0.15s ease;
+  }
+
+  .app-split-pane-handle-icon {
+    flex-shrink: 0;
+    pointer-events: none;
+    color: var(--text-muted);
+    opacity: 0.65;
+    transition:
+      color 0.15s ease,
+      opacity 0.15s ease;
+  }
+
+  .app-split-pane-handle:hover .app-split-pane-handle-icon,
+  .app-split-pane-handle:focus-visible .app-split-pane-handle-icon,
+  .app-split-pane-handle:active .app-split-pane-handle-icon {
+    color: var(--text-primary);
+    opacity: 1;
+  }
+
+  .app-split-pane-handle:hover,
+  .app-split-pane-handle:focus-visible {
+    background-color: var(--panel-border);
+  }
+
+  .app-split-pane-handle:focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
+  }
+
+  .app-split-pane-handle:active {
+    background-color: var(--focus-ring);
+  }
+
+  /* Details column: fill grid track (same as explorer). */
+  .app-tree-details-pane {
+    @apply flex min-h-0 min-w-0 w-full flex-col;
+  }
+
+  .app-tree-details-pane > * {
+    @apply min-h-0 flex-1;
   }
 }

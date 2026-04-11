@@ -1,4 +1,4 @@
-import { validateTreeJson, type TreeNode } from '../../../lib/fileTree'
+import { validateTreeJson, type TreeNode } from '@/lib/fileTree'
 
 type ParseResult = { ok: true; tree: TreeNode } | { ok: false; error: string }
 

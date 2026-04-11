@@ -1,5 +1,6 @@
+import type { ImportStatusTone } from '@/components/molecules/import-status'
+import { importStatusClassName } from '@/components/molecules/importStatusClassName'
 import { useRef } from 'react'
-import type { ImportStatusTone } from './import-status'
 
 type ImportLeftStackProps = {
   selectedFileName: string | null
@@ -18,12 +19,7 @@ export function ImportLeftStack({
 }: ImportLeftStackProps) {
   const fileInputRef = useRef<HTMLInputElement>(null)
 
-  const statusClassName =
-    statusType === 'success'
-      ? 'status-text-success'
-      : statusType === 'error'
-        ? 'status-text-error'
-        : 'status-text-idle'
+  const statusClassName = importStatusClassName(statusType)
 
   const rootClass = ['flex min-w-0 flex-col gap-1', className].filter(Boolean).join(' ')
 
@@ -66,12 +62,7 @@ export function FileImportHeaderControls({
 }: FileImportHeaderControlsProps) {
   const fileInputRef = useRef<HTMLInputElement>(null)
 
-  const statusClassName =
-    statusType === 'success'
-      ? 'status-text-success'
-      : statusType === 'error'
-        ? 'status-text-error'
-        : 'status-text-idle'
+  const statusClassName = importStatusClassName(statusType)
 
   return (
     <div className="flex min-w-[360px] max-w-[520px] flex-col items-end gap-1">

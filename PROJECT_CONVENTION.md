@@ -12,21 +12,21 @@ React codebases usually avoid a single giant `components/` dump. Two ideas show 
 
 ### Conventions used in this repo
 
-| Area            | Rule |
-| --------------- | ---- |
-| **Entry**       | `main.tsx` mounts the app with `BrowserRouter`; `App.tsx` wraps `WorkspaceProvider` + `AppRoutes`. |
-| **`contexts/`** | App-wide React Context (workspace: theme, JSON import state, tree selection, search). Hooks such as `useWorkspace` live next to the context definition. |
-| **`routes/`**   | Route configuration (`AppRoutes.tsx`) and layout guards (`RequireTreeData.tsx` — tree must be loaded). |
-| **`pages/`**    | Route-level view components only (`HomePage`, `TreePage`, `TreeNodePage`); compose features and molecules, minimal logic. |
-| **`layouts/`**  | Page shells with `<Outlet />` (e.g. `MainLayout` — toolbar + content area). |
-| **`features/`** | Business behavior + feature UI: `file-import/` (hooks, parsers), `tree-explorer/` (tree UI, explorer panel, details, workspace view). No React inside `utils` when avoidable. |
-| **`components/`** | **Shared UI** by Atomic Design tier: `atoms/` (primitives), `molecules/` (composite controls, no tree domain), `organisms/` (toolbar, panel shell). Molecules avoid importing `features/`; use local UI types (e.g. `ImportStatusTone`) where needed. |
-| **`services/`** | Thin adapters for I/O (e.g. `loadSampleTreeJson.ts`). |
-| **`lib/`**      | **App-wide, framework-agnostic** logic (tree model, Zod validation, path resolution). Unit tests live as `*.test.ts` next to the module (e.g. `fileTree.test.ts`). |
-| **`styles/`**   | Global Tailwind entry points and `@layer components` tokens (theme CSS variables). Prefer palette variables over hard-coded colors in JSX. |
-| **`assets/`**   | Static images/SVGs referenced from React. **`public/`** for files served by URL path (e.g. `file-tree-sample.json`). |
-| **Imports**     | Prefer barrels (`features/tree-explorer`, `contexts`, `components/organisms`) for stable paths; avoid deep `../../../` chains when an `index.ts` exists. |
-| **Tests**       | Jest + `ts-jest`; test files `src/**/*.test.ts`. App sources are excluded from the Jest TS project in `tsconfig.app.json`; Jest uses `tsconfig.jest.json`. |
+| Area              | Rule                                                                                                                                                                                                                                                                            |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Entry**         | `main.tsx` mounts the app with `BrowserRouter`; `App.tsx` wraps `WorkspaceProvider` + `AppRoutes`.                                                                                                                                                                              |
+| **`contexts/`**   | App-wide React Context: `workspaceContext.ts` (value + context object), `WorkspaceProvider.tsx`, `useWorkspace.ts`, barrel `index.ts`. Holds theme, JSON import state, tree selection, search.                                                                                  |
+| **`routes/`**     | Route configuration (`AppRoutes.tsx`) and layout guards (`RequireTreeData.tsx` — tree must be loaded).                                                                                                                                                                          |
+| **`pages/`**      | Route-level view components only (`HomePage`, `TreePage`, `TreeNodePage`); compose features and molecules, minimal logic.                                                                                                                                                       |
+| **`layouts/`**    | Page shells with `<Outlet />` (e.g. `MainLayout` — toolbar + content area).                                                                                                                                                                                                     |
+| **`features/`**   | Business behavior + feature UI: `file-import/` (hooks, parsers), `tree-explorer/` (tree UI, explorer panel, details, workspace view). No React inside `utils` when avoidable.                                                                                                   |
+| **`components/`** | **Shared UI** by Atomic Design tier: `atoms/` (primitives), `molecules/` (composite controls, no tree domain), `organisms/` (toolbar, panel shell). Molecules avoid importing `features/`; use local UI types (e.g. `ImportStatusTone`) where needed.                           |
+| **`services/`**   | Thin **I/O and browser adapters**: `loadSampleTreeJson.ts` (network), `treeSearchLocalStorage.ts`, `workspaceTreeLocalStorage.ts` (`localStorage` / migration). Not pure domain logic.                                                                                          |
+| **`lib/`**        | **App-wide, framework-agnostic** logic (tree model, Zod validation, path resolution, `formatBytes`). Optional barrel `lib/index.ts` for small shared exports; larger modules (e.g. `fileTree.ts`) stay addressable directly. Unit tests live as `*.test.ts` next to the module. |
+| **`styles/`**     | Global Tailwind entry points and `@layer components` tokens (theme CSS variables). Prefer palette variables over hard-coded colors in JSX.                                                                                                                                      |
+| **`assets/`**     | Static images/SVGs referenced from React. **`public/`** for files served by URL path (e.g. `file-tree-sample.json`).                                                                                                                                                            |
+| **Imports**       | Prefer barrels (`features/tree-explorer`, `contexts`, `components/organisms`, `lib` for `formatBytes`) when an `index.ts` exists; avoid unnecessary deep `../../../` chains.                                                                                                    |
+| **Tests**         | Jest + `ts-jest`; test files `src/**/*.test.ts`. App sources are excluded from the Jest TS project in `tsconfig.app.json`; Jest uses `tsconfig.jest.json`.                                                                                                                      |
 
 ### Directory tree (simplified)
 
@@ -38,17 +38,17 @@ src/
   assets/                  # Bundled static assets
   components/
     atoms/                 # Smallest UI primitives (extend as needed)
-    molecules/             # e.g. JsonImportDropzone, DetailsMetaGrid, DetailsPathLinks
+    molecules/             # e.g. JsonImportDropzone, DetailsMetaGrid, ToolbarTreeSearch
     organisms/             # e.g. AppToolbar, Panel, PreviewPanel
-  contexts/                # WorkspaceContext, WorkspaceProvider, useWorkspace
+  contexts/                # workspaceContext.ts, WorkspaceProvider.tsx, useWorkspace.ts, index.ts
   features/
     file-import/
     tree-explorer/         # TreeExplorer, ExplorerPanel, details, TreeWorkspaceView
   layouts/                 # MainLayout
   pages/                   # HomePage, TreePage, TreeNodePage
   routes/                  # AppRoutes, RequireTreeData
-  services/                # e.g. loadSampleTreeJson
-  lib/                     # Pure TS (models, validation)
+  services/                # loadSampleTreeJson, treeSearchLocalStorage, workspaceTreeLocalStorage
+  lib/                     # fileTree, formatBytes, index.ts (barrel for small exports)
   styles/                  # Shared component / theme CSS (Tailwind layers)
 public/                    # Static files by URL
 ```

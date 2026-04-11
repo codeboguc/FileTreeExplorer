@@ -1,6 +1,7 @@
+import type { ImportStatusTone } from '@/components/molecules/import-status'
+import { importStatusClassName } from '@/components/molecules/importStatusClassName'
 import { FileJson, Upload } from 'lucide-react'
 import { useCallback, useRef, useState, type DragEvent } from 'react'
-import type { ImportStatusTone } from './import-status'
 
 type JsonImportDropzoneProps = {
   selectedFileName: string | null
@@ -24,12 +25,7 @@ export function JsonImportDropzone({
   const [isDragActive, setIsDragActive] = useState(false)
   const dragDepthRef = useRef(0)
 
-  const statusClassName =
-    statusType === 'success'
-      ? 'status-text-success'
-      : statusType === 'error'
-        ? 'status-text-error'
-        : 'status-text-idle'
+  const statusClassName = importStatusClassName(statusType)
 
   const handleFile = useCallback(
     (file: File | null | undefined) => {

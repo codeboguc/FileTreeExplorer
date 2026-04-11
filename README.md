@@ -53,4 +53,3 @@ Open the URL shown in the terminal (usually `http://localhost:5173`).
 - Full-text **search** across the tree with persisted results.
 - Richer **preview** (e.g. syntax-highlighted file content from metadata).
 - Stricter accessibility (e.g. `aria-activedescendant` for the tree).
-

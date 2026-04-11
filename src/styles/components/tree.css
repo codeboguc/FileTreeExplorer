@@ -3,9 +3,19 @@
 /* -------------------------------------------------------------------------- */
 
 @layer components {
+  /* Widen with content so `.panel-shell__fill-scroll-inner` can show a horizontal scrollbar. */
+  .tree-explorer-viewport {
+    min-width: 100%;
+    width: max-content;
+  }
+
+  .tree-explorer-list {
+    @apply min-w-full;
+    width: max-content;
+  }
+
   .tree-row {
-    /* Horizontal padding lives on .tree-row-button so indent + row share one hit target. */
-    @apply flex items-center justify-between rounded py-1 pr-2 text-sm transition-colors;
+    @apply flex w-max items-center justify-between gap-2 rounded py-1 pr-2 text-sm transition-colors;
     color: var(--text-primary);
   }
 
@@ -23,7 +33,12 @@
   }
 
   .tree-row-button {
-    @apply rounded;
+    @apply flex min-w-0 items-center gap-1.5 rounded text-left;
+  }
+
+  .tree-row-name {
+    @apply shrink-0 font-mono;
+    white-space: nowrap;
   }
 
   .tree-row-button:focus-visible {

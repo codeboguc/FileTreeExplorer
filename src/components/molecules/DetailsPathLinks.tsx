@@ -1,3 +1,5 @@
+import { formatNodePathForDisplay, getNodePathLinkParts } from '@/lib/fileTree'
+
 type DetailsPathLinksProps = {
   fullPath: string
   onSelectPath?: (path: string) => void
@@ -5,31 +7,36 @@ type DetailsPathLinksProps = {
 
 /** Clickable path segments: opens each ancestor (or the full path) in the explorer. */
 export function DetailsPathLinks({ fullPath, onSelectPath }: DetailsPathLinksProps) {
-  const segments = fullPath.split('/').filter(Boolean)
+  const parts = getNodePathLinkParts(fullPath)
+  const displayPlain = formatNodePathForDisplay(fullPath)
 
   if (!onSelectPath) {
-    return <span className="details-path-plain">{fullPath}</span>
+    return <span className="details-path-plain">{displayPlain}</span>
   }
 
-  if (segments.length <= 1) {
+  if (parts.length === 0) {
+    return <span className="details-path-plain">{displayPlain}</span>
+  }
+
+  if (parts.length === 1) {
+    const only = parts[0]
     return (
       <button
         type="button"
         className="details-path-segment-btn details-path-segment-btn--current"
-        onClick={() => onSelectPath(fullPath)}
+        onClick={() => onSelectPath(only.fullPath)}
       >
-        {fullPath}
+        {only.label}
       </button>
     )
   }
 
   return (
     <span className="details-path-links">
-      {segments.map((segment, index) => {
-        const pathUpTo = segments.slice(0, index + 1).join('/')
-        const isLast = index === segments.length - 1
+      {parts.map((part, index) => {
+        const isLast = index === parts.length - 1
         return (
-          <span key={pathUpTo} className="details-path-segment-wrap">
+          <span key={part.fullPath} className="details-path-segment-wrap">
             {index > 0 ? <span className="details-path-sep">/</span> : null}
             <button
               type="button"
@@ -38,9 +45,9 @@ export function DetailsPathLinks({ fullPath, onSelectPath }: DetailsPathLinksPro
                   ? 'details-path-segment-btn details-path-segment-btn--current'
                   : 'details-path-segment-btn'
               }
-              onClick={() => onSelectPath(pathUpTo)}
+              onClick={() => onSelectPath(part.fullPath)}
             >
-              {segment}
+              {part.label}
             </button>
           </span>
         )

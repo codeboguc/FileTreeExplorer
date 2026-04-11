@@ -1,4 +1,4 @@
-import { Panel } from './Panel'
+import { Panel } from '@/components/organisms/Panel'
 
 type PreviewPanelProps = {
   imagePath: string

@@ -1,5 +1,5 @@
+import { WorkspaceContext, type WorkspaceContextValue } from '@/contexts/workspaceContext'
 import { useContext } from 'react'
-import { WorkspaceContext, type WorkspaceContextValue } from './workspaceContext'
 
 export function useWorkspace(): WorkspaceContextValue {
   const ctx = useContext(WorkspaceContext)

@@ -1,5 +1,5 @@
+import { IconButton } from '@/components/atoms/IconButton'
 import { Moon, Sun } from 'lucide-react'
-import { IconButton } from '../atoms/IconButton'
 
 export type ToolbarThemeMode = 'light' | 'dark'
 

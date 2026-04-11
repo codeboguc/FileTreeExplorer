@@ -34,7 +34,18 @@ export const useExpandedFolders = () => {
     setExpandedPaths(new Set([ROOT_PATH_KEY]))
   }, [])
 
-  /** Ensures folders with these internal path keys stay expanded (e.g. after selecting from Details). */
+  /** Collapses all folders except those on `pathKeys` (toolbar search / details path). */
+  const syncExpandedToAncestorPath = useCallback((pathKeys: readonly string[]) => {
+    setExpandedPaths(() => {
+      const next = new Set<string>([ROOT_PATH_KEY])
+      for (const key of pathKeys) {
+        next.add(key)
+      }
+      return next
+    })
+  }, [])
+
+  /** Adds keys so the selection path is visible; keeps other expanded folders (explorer). */
   const expandPaths = useCallback((pathKeys: readonly string[]) => {
     if (pathKeys.length === 0) {
       return
@@ -52,5 +63,11 @@ export const useExpandedFolders = () => {
     })
   }, [])
 
-  return { isExpanded, toggleExpanded, resetExpanded, expandPaths }
+  return {
+    isExpanded,
+    toggleExpanded,
+    resetExpanded,
+    syncExpandedToAncestorPath,
+    expandPaths,
+  }
 }

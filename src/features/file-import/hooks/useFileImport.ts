@@ -1,7 +1,12 @@
+import type { ImportState } from '@/features/file-import/types'
+import { parseAndValidateTree } from '@/features/file-import/utils/parseAndValidateTree'
+import { getSampleTreeUrl, loadSampleTreeJson } from '@/services/loadSampleTreeJson'
+import {
+  clearPersistedImportedTree,
+  persistImportedTree,
+  readPersistedImportedTree,
+} from '@/services/workspaceTreeLocalStorage'
 import { useState } from 'react'
-import { getSampleTreeUrl, loadSampleTreeJson } from '../../../services/loadSampleTreeJson'
-import type { ImportState } from '../types'
-import { parseAndValidateTree } from '../utils/parseAndValidateTree'
 
 const initialStatusMessage =
   'Import a JSON file to validate and render the file explorer.'
@@ -13,8 +18,30 @@ const initialState: ImportState = {
   treeRoot: null,
 }
 
+function buildInitialImportState(): ImportState {
+  const persisted = readPersistedImportedTree()
+  if (!persisted) {
+    return initialState
+  }
+
+  const parsedResult = parseAndValidateTree(persisted.sourceName, persisted.rawText)
+  if (parsedResult.ok === false) {
+    clearPersistedImportedTree()
+    return initialState
+  }
+
+  return {
+    selectedFileName: persisted.sourceName,
+    statusMessage: `Restored "${persisted.sourceName}" from browser storage.`,
+    statusType: 'success',
+    treeRoot: parsedResult.tree,
+  }
+}
+
 export const useFileImport = () => {
-  const [state, setState] = useState<ImportState>(initialState)
+  const [state, setState] = useState<ImportState>(buildInitialImportState)
+  /** Increments only after a successful parse in this session (not on localStorage hydrate). */
+  const [importSuccessTick, setImportSuccessTick] = useState(0)
 
   const applyJsonText = (sourceName: string, text: string) => {
     const parsedResult = parseAndValidateTree(sourceName, text)
@@ -29,6 +56,9 @@ export const useFileImport = () => {
       return
     }
 
+    persistImportedTree(sourceName, text)
+
+    setImportSuccessTick((t) => t + 1)
     setState((prev) => ({
       ...prev,
       statusType: 'success',
@@ -82,5 +112,6 @@ export const useFileImport = () => {
     state,
     handleFileSelect,
     handleLoadSample,
+    importSuccessTick,
   }
 }

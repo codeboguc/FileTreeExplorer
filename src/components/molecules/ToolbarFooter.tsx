@@ -1,4 +1,5 @@
-import type { ImportStatusTone } from './import-status'
+import type { ImportStatusTone } from '@/components/molecules/import-status'
+import { importStatusClassName } from '@/components/molecules/importStatusClassName'
 
 type ToolbarFooterProps = {
   selectedFileName: string | null
@@ -11,18 +12,13 @@ export function ToolbarFooter({
   statusMessage,
   statusType,
 }: ToolbarFooterProps) {
-  const statusClassName =
-    statusType === 'success'
-      ? 'status-text-success'
-      : statusType === 'error'
-        ? 'status-text-error'
-        : 'status-text-idle'
+  const statusClassName = importStatusClassName(statusType)
 
   return (
     <div className="app-toolbar-sub">
       <p className="app-toolbar-sub-hint">
-        Load sample JSON above, or open Home to import your own file. Status for the current
-        session appears on the right.
+        Load sample JSON above, or open Home to import your own file. Status for the
+        current session appears on the right.
       </p>
       <div className="app-toolbar-sub-status">
         <span className="helper-text-xs">

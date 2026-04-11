@@ -1,4 +1,4 @@
-export { AppToolbar } from './AppToolbar'
-export type { AppToolbarProps, ThemeMode } from './AppToolbar'
-export { Panel } from './Panel'
-export { PreviewPanel } from './PreviewPanel'
+export { AppToolbar } from '@/components/organisms/AppToolbar'
+export type { AppToolbarProps, ThemeMode } from '@/components/organisms/AppToolbar'
+export { Panel } from '@/components/organisms/Panel'
+export { PreviewPanel } from '@/components/organisms/PreviewPanel'

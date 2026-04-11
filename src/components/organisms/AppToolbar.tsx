@@ -1,19 +1,22 @@
+import type { ImportStatusTone } from '@/components/molecules/import-status'
+import { LoadSampleToolbarButton } from '@/components/molecules/LoadSampleToolbarButton'
+import { ThemeToggle, type ToolbarThemeMode } from '@/components/molecules/ThemeToggle'
+import { ToolbarFooter } from '@/components/molecules/ToolbarFooter'
+import type { ToolbarSearchHit } from '@/components/molecules/ToolbarTreeSearch'
+import { ToolbarTreeSearch } from '@/components/molecules/ToolbarTreeSearch'
 import { Link } from 'react-router-dom'
-import type { ImportStatusTone } from '../molecules/import-status'
-import { LoadSampleToolbarButton } from '../molecules/LoadSampleToolbarButton'
-import { ThemeToggle, type ToolbarThemeMode } from '../molecules/ThemeToggle'
-import { ToolbarFooter } from '../molecules/ToolbarFooter'
-import { ToolbarSearchField } from '../molecules/ToolbarSearchField'
 
 export type ThemeMode = ToolbarThemeMode
 
 export type AppToolbarProps = {
   theme: ThemeMode
   onThemeChange: (theme: ThemeMode) => void
-  /** When true, a valid JSON tree is loaded — show search and wire Ctrl/⌘K. */
+  /** When true, a valid JSON tree is loaded — show search and wire Ctrl+Alt+F (⌃⌥F on Mac). */
   showTreeSearch: boolean
   searchQuery: string
   onSearchChange: (value: string) => void
+  searchHits: ToolbarSearchHit[]
+  onSelectSearchHit: (fullPath: string) => void
   onLoadSample: () => void
   selectedFileName: string | null
   statusMessage: string
@@ -26,6 +29,8 @@ export function AppToolbar({
   showTreeSearch,
   searchQuery,
   onSearchChange,
+  searchHits,
+  onSelectSearchHit,
   onLoadSample,
   selectedFileName,
   statusMessage,
@@ -42,10 +47,12 @@ export function AppToolbar({
           </h1>
         </div>
 
-        <ToolbarSearchField
+        <ToolbarTreeSearch
           enabled={showTreeSearch}
           value={searchQuery}
           onChange={onSearchChange}
+          results={searchHits}
+          onSelectHit={onSelectSearchHit}
         />
         {!showTreeSearch ? <div className="app-toolbar-main-spacer" aria-hidden /> : null}
 

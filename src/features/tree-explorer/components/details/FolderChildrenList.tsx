@@ -1,6 +1,8 @@
-import { TreeNodeType } from '../../../../lib/fileTree'
-import type { TreeNode } from '../../types'
-import { NodeIcon } from '../NodeIcon'
+import { NodeIcon } from '@/features/tree-explorer/components/NodeIcon'
+import type { TreeNode } from '@/features/tree-explorer/types'
+import { formatBytes } from '@/lib'
+import { sortTreeChildrenForDisplay, TreeNodeType } from '@/lib/fileTree'
+import { useMemo } from 'react'
 
 type FolderChildrenListProps = {
   childrenNodes: TreeNode[]
@@ -13,13 +15,18 @@ export function FolderChildrenList({
   fullPath,
   onSelectPath,
 }: FolderChildrenListProps) {
-  if (childrenNodes.length === 0) {
-    return <p className="text-muted text-sm">This folder has no children.</p>
+  const sortedChildren = useMemo(
+    () => sortTreeChildrenForDisplay(childrenNodes),
+    [childrenNodes],
+  )
+
+  if (sortedChildren.length === 0) {
+    return <p className="text-left text-muted text-sm">This folder has no children.</p>
   }
 
   return (
     <ul className="details-children-list">
-      {childrenNodes.map((child) => {
+      {sortedChildren.map((child) => {
         const childPath = `${fullPath}/${child.name}`
         const isEmptyFolder =
           child.type === TreeNodeType.Folder && child.children.length === 0
@@ -37,9 +44,11 @@ export function FolderChildrenList({
                 isExpanded={false}
                 isEmptyFolder={isEmptyFolder}
               />
-              <span className="font-mono">{child.name}</span>
+              <span className="details-children-name" title={child.name}>
+                {child.name}
+              </span>
               {child.type === TreeNodeType.File ? (
-                <span className="details-file-size">{child.size} B</span>
+                <span className="details-file-size">{formatBytes(child.size)}</span>
               ) : null}
             </button>
           </li>

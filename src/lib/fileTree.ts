@@ -19,6 +19,33 @@ export type FolderNode = {
 
 export type TreeNode = FileNode | FolderNode
 
+const sortableTreeName = (value: string) => value.toLocaleLowerCase()
+
+/** `.ts`, `.tsx`, `.mts`, `.cts` (case-insensitive). */
+export function isTypeScriptSourceFileName(name: string): boolean {
+  return /\.(tsx?|mts|cts)$/i.test(name)
+}
+
+/**
+ * Explorer and folder-details children: **folders first**, then **TypeScript** files (`.ts`/`.tsx`/`.mts`/`.cts`),
+ * then other files; within each group, names are compared case-insensitively.
+ */
+export function sortTreeChildrenForDisplay(nodes: TreeNode[]): TreeNode[] {
+  return [...nodes].sort((left, right) => {
+    if (left.type !== right.type) {
+      return left.type === TreeNodeType.Folder ? -1 : 1
+    }
+    if (left.type === TreeNodeType.File) {
+      const leftTs = isTypeScriptSourceFileName(left.name)
+      const rightTs = isTypeScriptSourceFileName(right.name)
+      if (leftTs !== rightTs) {
+        return leftTs ? -1 : 1
+      }
+    }
+    return sortableTreeName(left.name).localeCompare(sortableTreeName(right.name))
+  })
+}
+
 type ValidationSuccess = {
   ok: true
   data: TreeNode
@@ -39,6 +66,48 @@ export type NodeSelection = {
 /** Synthetic folder created by the app after import; all imported nodes become its children. */
 export const CORE_EXPLORER_ROOT_NAME = 'workspace'
 
+const pathSegmentEquals = (a: string, b: string) =>
+  a.localeCompare(b, undefined, { sensitivity: 'base' }) === 0
+
+/**
+ * Path shown in the UI: POSIX-style, without the synthetic `workspace/` prefix
+ * (e.g. `src/components/Button.tsx`). The workspace root itself is shown as `.`.
+ */
+export function formatNodePathForDisplay(fullPath: string): string {
+  if (fullPath === CORE_EXPLORER_ROOT_NAME) {
+    return '.'
+  }
+  const prefix = `${CORE_EXPLORER_ROOT_NAME}/`
+  if (fullPath.startsWith(prefix)) {
+    return fullPath.slice(prefix.length)
+  }
+  return fullPath
+}
+
+/** Breadcrumb segments: visible label + internal `fullPath` for selection callbacks. */
+export function getNodePathLinkParts(fullPath: string): { label: string; fullPath: string }[] {
+  const segments = fullPath.split('/').filter(Boolean)
+  if (segments.length === 0) {
+    return []
+  }
+
+  if (segments[0] === CORE_EXPLORER_ROOT_NAME) {
+    if (segments.length === 1) {
+      return [{ label: '.', fullPath: CORE_EXPLORER_ROOT_NAME }]
+    }
+    const rest = segments.slice(1)
+    return rest.map((_, i) => ({
+      label: rest[i],
+      fullPath: [CORE_EXPLORER_ROOT_NAME, ...rest.slice(0, i + 1)].join('/'),
+    }))
+  }
+
+  return segments.map((_, i) => ({
+    label: segments[i],
+    fullPath: segments.slice(0, i + 1).join('/'),
+  }))
+}
+
 const treeNodeSchema: z.ZodType<TreeNode> = z.lazy(() =>
   z.discriminatedUnion('type', [
     z.object({
@@ -57,9 +126,7 @@ const treeNodeSchema: z.ZodType<TreeNode> = z.lazy(() =>
 /** Single tree node or an array of sibling roots (wrapped under {@link CORE_EXPLORER_ROOT_NAME} after validation). */
 const importedPayloadSchema = z.union([
   treeNodeSchema,
-  z
-    .array(treeNodeSchema)
-    .min(1, 'Array must contain at least one tree node'),
+  z.array(treeNodeSchema).min(1, 'Array must contain at least one tree node'),
 ])
 
 const formatIssuePath = (segments: PropertyKey[]) => {
@@ -198,6 +265,21 @@ export const splitFolderChildren = (
   return { folders, files }
 }
 
+/**
+ * Builds `/tree/...` path segments: encodes each name but keeps `/` between segments
+ * (avoids a single `%2F`-encoded blob in the address bar).
+ */
+export function encodeRelativeTreePathForUrl(relativePath: string): string {
+  const segments = relativePath
+    .split('/')
+    .map((s) => s.trim())
+    .filter((s) => s.length > 0)
+  if (segments.length === 0) {
+    return ''
+  }
+  return segments.map((segment) => encodeURIComponent(segment)).join('/')
+}
+
 export const findNodeByRelativePath = (
   root: TreeNode,
   relativePath: string,
@@ -215,7 +297,7 @@ export const findNodeByRelativePath = (
   let current: TreeNode = root
   let currentPath = root.name
 
-  if (segments[0] === root.name) {
+  if (segments.length > 0 && pathSegmentEquals(segments[0], root.name)) {
     segments.shift()
   }
 
@@ -224,13 +306,13 @@ export const findNodeByRelativePath = (
       return null
     }
 
-    const next = current.children.find((child) => child.name === segment)
+    const next = current.children.find((child) => pathSegmentEquals(child.name, segment))
     if (!next) {
       return null
     }
 
     current = next
-    currentPath = `${currentPath}/${segment}`
+    currentPath = `${currentPath}/${next.name}`
   }
 
   return { node: current, fullPath: currentPath }
