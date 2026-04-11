@@ -1,61 +1,76 @@
 # Project structure and conventions
 
-### What common practice suggests
+This note is for anyone opening the repo for the first time: how folders are laid out, why it looks this way, and what we try to keep consistent.
 
-React codebases usually avoid a single giant `components/` dump. Two ideas show up repeatedly:
+## Why not one big `components/` folder?
 
-1. **Feature-first (vertical slices)** — Group by **user-facing capability** (e.g. “file import”, “tree explorer”) so one folder owns UI, hooks, and small utils for that flow. Changes stay localized; deleting a feature is closer to deleting one tree. This aligns with **colocation** (keep modules near where they are used), which scales better than strict global layers alone. See [Thinking in React](https://react.dev/learn/thinking-in-react) for composing UI from smaller pieces, and [Colocation](https://kentcdodds.com/blog/colocation) for why proximity matters as apps grow.
+Most React teams eventually move away from dumping everything into a single `components` directory. Two patterns come up again and again:
 
-2. **Optional stricter layering** — [Feature-Sliced Design](https://feature-sliced.design/) adds explicit layers (`shared` → `entities` → `features` → `widgets` → `pages` → `app`) and import rules. Useful for very large teams; this repo combines **Atomic-style `components/`** (atoms → molecules → organisms) with **`features/`** vertical slices and **`pages/`** / **`routes`** for routing.
+**Vertical slices (feature-first)** — You group code by what the user can do: “import JSON”, “explore the tree”, and so on. One folder owns the UI, hooks, and small helpers for that flow. When you change a feature, you stay in one part of the tree; when you delete it, you’re not hunting across the whole app. That idea is close to **colocation**: keep files near where they’re used. It tends to scale more calmly than rigid global layers alone. The official [Thinking in React](https://react.dev/learn/thinking-in-react) guide is a good mental model for breaking UI into pieces; [Colocation](https://kentcdodds.com/blog/colocation) spells out why “nearby code” matters as things grow.
 
-**Naming:** Multi-word **folders** are usually `kebab-case` (`tree-explorer`). **Component files** use `PascalCase` matching the default export. **Hooks** use the `useX` prefix. **Utilities** are `camelCase` file names (`parseAndValidateTree.ts`). **Barrel files** `index.ts` re-export the public API of a folder to keep imports stable.
+**Stricter layering (optional)** — [Feature-Sliced Design](https://feature-sliced.design/) goes further: fixed layers (`shared` → `entities` → `features` → …) and rules about who may import whom. That pays off for large teams and long-lived products. This project is smaller: we mix **Atomic Design–style** shared UI (`atoms` → `molecules` → `organisms`) with **`features/`** slices and **`pages/`** + **`routes/`** for routing. It’s a pragmatic middle ground.
 
-### Conventions used in this repo
+## Naming
 
-| Area              | Rule                                                                                                                                                                                                                                                                            |
-| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Entry**         | `main.tsx` mounts the app with `BrowserRouter`; `App.tsx` wraps `WorkspaceProvider` + `AppRoutes`.                                                                                                                                                                              |
-| **`contexts/`**   | App-wide React Context: `workspaceContext.ts` (value + context object), `WorkspaceProvider.tsx`, `useWorkspace.ts`, barrel `index.ts`. Holds theme, JSON import state, tree selection, search.                                                                                  |
-| **`routes/`**     | Route configuration (`AppRoutes.tsx`) and layout guards (`RequireTreeData.tsx` — tree must be loaded).                                                                                                                                                                          |
-| **`pages/`**      | Route-level view components only (`HomePage`, `TreePage`, `TreeNodePage`); compose features and molecules, minimal logic.                                                                                                                                                       |
-| **`layouts/`**    | Page shells with `<Outlet />` (e.g. `MainLayout` — toolbar + content area).                                                                                                                                                                                                     |
-| **`features/`**   | Business behavior + feature UI: `file-import/` (hooks, parsers), `tree-explorer/` (tree UI, explorer panel, details, workspace view). No React inside `utils` when avoidable.                                                                                                   |
-| **`components/`** | **Shared UI** by Atomic Design tier: `atoms/` (primitives, tokens, `ImportStatusTone`, `HiddenJsonFileInput`, meta rows, hit buttons), `molecules/` (compositions: toolbar search, JSON import drop/paste, path links), `organisms/` (toolbar, panel shell). Molecules avoid importing `features/` except where composing app flows (e.g. `JsonImportDropzone` + `importSourceLabels`).                           |
-| **`services/`**   | Thin **I/O and browser adapters**: `loadSampleTreeJson.ts` (network), `treeSearchLocalStorage.ts`, `workspaceTreeLocalStorage.ts` (`localStorage` / migration). Not pure domain logic.                                                                                          |
-| **`lib/`**        | **App-wide, framework-agnostic** logic (tree model, Zod validation, path resolution, `formatBytes`). Optional barrel `lib/index.ts` for small shared exports; larger modules (e.g. `fileTree.ts`) stay addressable directly. Unit tests live as `*.test.ts` next to the module. |
-| **`styles/`**     | Global Tailwind entry points and `@layer components` tokens (theme CSS variables). Prefer palette variables over hard-coded colors in JSX.                                                                                                                                      |
-| **`assets/`**     | Static images/SVGs referenced from React. **`public/`** for files served by URL path (e.g. `file-tree-sample.json`).                                                                                                                                                            |
-| **Imports**       | Prefer barrels (`features/tree-explorer`, `contexts`, `components/organisms`, `lib` for `formatBytes`) when an `index.ts` exists; avoid unnecessary deep `../../../` chains.                                                                                                    |
-| **Tests**         | Jest + `ts-jest`; test files `src/**/*.test.ts`. App sources are excluded from the Jest TS project in `tsconfig.app.json`; Jest uses `tsconfig.jest.json`.                                                                                                                      |
+Nothing exotic: multi-word **directories** are `kebab-case` (e.g. `tree-explorer`). **React components** live in `PascalCase` files that match the default export. **Hooks** start with `use`. **Plain utilities** use `camelCase` filenames (`parseAndValidateTree.ts`). Folders that expose a small public surface often have an **`index.ts`** barrel so imports stay stable (`@/features/tree-explorer` instead of deep relative paths).
 
-### Directory tree (simplified)
+## How this repo is organised
+
+**Entry** — `main.tsx` mounts the app inside `BrowserRouter`. `App.tsx` wraps everything in `WorkspaceProvider` and renders `AppRoutes`.
+
+**`contexts/`** — One main app context today: workspace theme, JSON import state, selected tree node, and the toolbar search string. Files: `workspaceContext.ts`, `WorkspaceProvider.tsx`, `useWorkspace.ts`, plus a barrel `index.ts`.
+
+**`routes/`** — `AppRoutes.tsx` defines routes; `RequireTreeData` redirects you home if you hit tree routes without loaded data.
+
+**`pages/`** — Thin route targets: `HomePage`, `TreePage`, `TreeNodePage`. They compose layouts, features, and shared components instead of hiding lots of logic.
+
+**`layouts/`** — Shells with `<Outlet />`. `MainLayout` is the usual chrome: toolbar plus the scrollable main area.
+
+**`features/`** — Where behaviour lives. `file-import/` has hooks and validation helpers; `tree-explorer/` has the tree list, explorer panel, details side, and the split workspace view. We keep `utils` inside features free of React when we can, so the same logic is easier to test and reason about.
+
+**`components/`** — Shared UI only, roughly by Atomic tier. **Atoms** are small primitives (buttons, labels, status tones, hidden file input, etc.). **Molecules** combine them (toolbar search, JSON drop/paste zone, path links in the details panel). **Organisms** are larger shells (toolbar, `Panel`, `PreviewPanel`, and similar). Molecules normally shouldn’t depend on `features/`, except where we deliberately wire a flow—`JsonImportDropzone` pulling in `importSourceLabels` is that kind of exception.
+
+**`services/`** — Thin adapters to the outside world: fetching the sample JSON, reading and writing `localStorage` for the tree, search query, theme, and UI language. No heavy domain rules here—that stays in `lib/` or `features/`.
+
+**`i18n/`** and **`locales/`** — i18next bootstrap (`config.ts`, typings) and JSON translation files. Initialisation runs before the React tree so hooks like `useTranslation` work everywhere.
+
+**`lib/`** — Framework-agnostic stuff: tree model, Zod validation, path encoding, `formatBytes`. Co-located **`*.test.ts`** files use Jest. There’s a small `lib/index.ts` barrel for tiny exports; bigger modules like `fileTree.ts` are imported by path when that’s clearer.
+
+**`styles/`** — Tailwind entrypoints and component-level CSS (theme variables, panels, tree, toolbar). Prefer design tokens / CSS variables over random hex values in JSX.
+
+**`assets/`** — Static files bundled through Vite (images, SVGs referenced from components). Anything loaded by URL (sample JSON, `theme-init.js`, icons) sits under **`public/`**.
+
+**Imports** — When a folder exports a barrel, use it (`@/contexts`, `@/features/tree-explorer`, …) so you don’t chain `../../../`. Same idea for `lib` when you only need `formatBytes`-level exports.
+
+**Tests** — Jest with `ts-jest`. Test files match `src/**/*.test.ts`. App TypeScript is `tsconfig.app.json`; Jest uses `tsconfig.jest.json` so test compilation stays separate.
+
+## Directory sketch
 
 ```text
 src/
-  main.tsx                 # React root + BrowserRouter
-  App.tsx                  # WorkspaceProvider + AppRoutes
-  index.css                # Tailwind + global base
-  assets/                  # Bundled static assets
-  components/
-    atoms/                 # Smallest UI primitives (extend as needed)
-    molecules/             # e.g. JsonImportDropzone, DetailsMetaGrid, ToolbarTreeSearch
-    organisms/             # e.g. AppToolbar, Panel, PreviewPanel
-  contexts/                # workspaceContext.ts, WorkspaceProvider.tsx, useWorkspace.ts, index.ts
+  main.tsx              # Root + router
+  App.tsx               # Provider + routes
+  index.css             # Tailwind + base styles
+  assets/
+  components/           # atoms, molecules, organisms
+  contexts/
   features/
     file-import/
-    tree-explorer/         # TreeExplorer, ExplorerPanel, details, TreeWorkspaceView
-  layouts/                 # MainLayout
-  pages/                   # HomePage, TreePage, TreeNodePage
-  routes/                  # AppRoutes, RequireTreeData
-  services/                # loadSampleTreeJson, treeSearchLocalStorage, workspaceTreeLocalStorage
-  lib/                     # fileTree, formatBytes, index.ts (barrel for small exports)
-  styles/                  # Shared component / theme CSS (Tailwind layers)
-public/                    # Static files by URL
+    tree-explorer/
+  i18n/
+  layouts/
+  locales/              # en.json, pl.json, …
+  pages/
+  routes/
+  services/
+  lib/
+  styles/
+public/                 # Served as static URLs
 ```
 
-### Further reading
+## Further reading
 
-- [React — Thinking in React](https://react.dev/learn/thinking-in-react)
-- [Kent C. Dodds — Colocation](https://kentcdodds.com/blog/colocation)
-- [Feature-Sliced Design](https://feature-sliced.design/) (stricter layered alternative)
+- [Thinking in React](https://react.dev/learn/thinking-in-react)  
+- [Colocation — Kent C. Dodds](https://kentcdodds.com/blog/colocation)  
+- [Feature-Sliced Design](https://feature-sliced.design/) (heavier structure, good reference)  
 - [Atomic Design](https://atomicdesign.bradfrost.com/) (atoms / molecules / organisms)
