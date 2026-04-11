@@ -169,8 +169,14 @@ describe('validateTreeJson', () => {
       expectFail({ name: 'a', type: TreeNodeType.File, size: -1 }, 'non-negative')
     })
 
-    it('rejects folder missing children', () => {
-      expectFail({ name: 'a', type: TreeNodeType.Folder })
+    it('accepts folder with omitted children (treated as empty)', () => {
+      const folder = { name: 'empty-dir', type: TreeNodeType.Folder }
+      const data = expectOkWrapped(folder)
+      expect(data.children[0]).toEqual({
+        name: 'empty-dir',
+        type: TreeNodeType.Folder,
+        children: [],
+      })
     })
 
     it('rejects folder with null children', () => {

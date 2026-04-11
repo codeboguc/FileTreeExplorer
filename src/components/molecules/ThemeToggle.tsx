@@ -1,5 +1,6 @@
 import { IconButton } from '@/components/atoms/IconButton'
 import { Moon, Sun } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
 export type ToolbarThemeMode = 'light' | 'dark'
 
@@ -9,11 +10,15 @@ type ThemeToggleProps = {
 }
 
 export function ThemeToggle({ theme, onThemeChange }: ThemeToggleProps) {
+  const { t } = useTranslation()
+
   return (
     <IconButton
       className="app-toolbar-icon-btn"
       onClick={() => onThemeChange(theme === 'dark' ? 'light' : 'dark')}
-      aria-label={theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}
+      aria-label={
+        theme === 'dark' ? t('theme.switchToLight') : t('theme.switchToDark')
+      }
     >
       {theme === 'dark' ? (
         <Sun className="size-[18px]" aria-hidden />

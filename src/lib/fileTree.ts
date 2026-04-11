@@ -118,7 +118,8 @@ const treeNodeSchema: z.ZodType<TreeNode> = z.lazy(() =>
     z.object({
       name: z.string().trim().min(1, '"name" must be a non-empty string'),
       type: z.literal(TreeNodeType.Folder),
-      children: z.array(treeNodeSchema),
+      /** Omitted or undefined → `[]` (empty folder). */
+      children: z.array(treeNodeSchema).default([]),
     }),
   ]),
 )

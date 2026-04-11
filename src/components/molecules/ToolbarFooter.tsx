@@ -1,31 +1,56 @@
-import type { ImportStatusTone } from '@/components/molecules/import-status'
-import { importStatusClassName } from '@/components/molecules/importStatusClassName'
+import { ImportSessionStatus } from '@/components/atoms/ImportSessionStatus'
+import type { ImportStatusTone } from '@/components/atoms/importStatus'
+import { Trans, useTranslation } from 'react-i18next'
 
 type ToolbarFooterProps = {
   selectedFileName: string | null
   statusMessage: string
   statusType: ImportStatusTone
+  suppressSessionStatus?: boolean
 }
 
 export function ToolbarFooter({
   selectedFileName,
   statusMessage,
   statusType,
+  suppressSessionStatus = false,
 }: ToolbarFooterProps) {
-  const statusClassName = importStatusClassName(statusType)
+  const { t } = useTranslation()
 
   return (
-    <div className="app-toolbar-sub">
+    <div
+      className={
+        suppressSessionStatus
+          ? 'app-toolbar-sub app-toolbar-sub--import-on-home'
+          : 'app-toolbar-sub'
+      }
+    >
       <p className="app-toolbar-sub-hint">
-        Load sample JSON above, or open Home to import your own file. Status for the
-        current session appears on the right.
+        {suppressSessionStatus ? (
+          <Trans
+            i18nKey="toolbar.footerHintHome"
+            components={{
+              1: <strong className="font-medium text-primary" />,
+            }}
+          />
+        ) : (
+          t('toolbar.footerHintDefault')
+        )}
       </p>
-      <div className="app-toolbar-sub-status">
-        <span className="helper-text-xs">
-          {selectedFileName ? `File: ${selectedFileName}` : 'No custom JSON file loaded'}
-        </span>
-        <p className={`text-xs ${statusClassName}`}>{statusMessage}</p>
-      </div>
+      {!suppressSessionStatus ? (
+        <div className="app-toolbar-sub-status">
+          <span className="helper-text-xs">
+            {selectedFileName
+              ? t('toolbar.filePrefix', { name: selectedFileName })
+              : t('toolbar.noCustomFileLoaded')}
+          </span>
+          <ImportSessionStatus
+            message={statusMessage}
+            statusType={statusType}
+            className="text-right"
+          />
+        </div>
+      ) : null}
     </div>
   )
 }

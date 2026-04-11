@@ -1,6 +1,8 @@
-import type { ImportStatusTone } from '@/components/molecules/import-status'
-import { importStatusClassName } from '@/components/molecules/importStatusClassName'
+import { HiddenJsonFileInput } from '@/components/atoms/HiddenJsonFileInput'
+import { ImportSessionStatus } from '@/components/atoms/ImportSessionStatus'
+import type { ImportStatusTone } from '@/components/atoms/importStatus'
 import { useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 
 type ImportLeftStackProps = {
   selectedFileName: string | null
@@ -17,9 +19,8 @@ export function ImportLeftStack({
   onFileSelect,
   className,
 }: ImportLeftStackProps) {
+  const { t } = useTranslation()
   const fileInputRef = useRef<HTMLInputElement>(null)
-
-  const statusClassName = importStatusClassName(statusType)
 
   const rootClass = ['flex min-w-0 flex-col gap-1', className].filter(Boolean).join(' ')
 
@@ -31,20 +32,16 @@ export function ImportLeftStack({
           className="btn-secondary"
           onClick={() => fileInputRef.current?.click()}
         >
-          Choose JSON file
+          {t('import.chooseFile')}
         </button>
-        <span className="helper-text-xs">{selectedFileName ?? 'No file selected'}</span>
+        <span className="helper-text-xs">
+          {selectedFileName ?? t('import.noFileSelected')}
+        </span>
       </div>
 
-      <input
-        ref={fileInputRef}
-        type="file"
-        accept="application/json,.json"
-        className="hidden"
-        onChange={(event) => onFileSelect(event.target.files?.[0] ?? null)}
-      />
+      <HiddenJsonFileInput ref={fileInputRef} onFileChange={onFileSelect} />
 
-      <p className={`text-xs ${statusClassName}`}>{statusMessage}</p>
+      <ImportSessionStatus message={statusMessage} statusType={statusType} />
     </div>
   )
 }
@@ -60,9 +57,8 @@ export function FileImportHeaderControls({
   onFileSelect,
   onLoadSample,
 }: FileImportHeaderControlsProps) {
+  const { t } = useTranslation()
   const fileInputRef = useRef<HTMLInputElement>(null)
-
-  const statusClassName = importStatusClassName(statusType)
 
   return (
     <div className="flex min-w-[360px] max-w-[520px] flex-col items-end gap-1">
@@ -72,23 +68,23 @@ export function FileImportHeaderControls({
           className="btn-secondary"
           onClick={() => fileInputRef.current?.click()}
         >
-          Choose JSON file
+          {t('import.chooseFile')}
         </button>
         <button type="button" className="btn-primary" onClick={onLoadSample}>
-          Load sample
+          {t('import.loadSampleShort')}
         </button>
-        <span className="helper-text-xs">{selectedFileName ?? 'No file selected'}</span>
+        <span className="helper-text-xs">
+          {selectedFileName ?? t('import.noFileSelected')}
+        </span>
       </div>
 
-      <input
-        ref={fileInputRef}
-        type="file"
-        accept="application/json,.json"
-        className="hidden"
-        onChange={(event) => onFileSelect(event.target.files?.[0] ?? null)}
-      />
+      <HiddenJsonFileInput ref={fileInputRef} onFileChange={onFileSelect} />
 
-      <p className={`text-right text-xs ${statusClassName}`}>{statusMessage}</p>
+      <ImportSessionStatus
+        message={statusMessage}
+        statusType={statusType}
+        className="text-right"
+      />
     </div>
   )
 }

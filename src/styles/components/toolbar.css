@@ -211,4 +211,43 @@
     @apply max-w-md shrink-0 text-xs leading-relaxed;
     color: var(--text-muted);
   }
+
+  .app-toolbar-sub--import-on-home .app-toolbar-sub-hint {
+    max-width: none;
+  }
+
+  .app-toolbar-sub--import-on-home {
+    @apply sm:justify-start;
+  }
+
+  .lang-switcher {
+    @apply inline-flex rounded-lg p-0.5;
+    border: 1px solid var(--panel-border);
+    background-color: var(--toolbar-search-bg);
+    gap: 2px;
+  }
+
+  .lang-switcher__btn {
+    @apply min-w-[2.25rem] rounded-md px-2 py-1 text-xs font-semibold transition-colors;
+    color: var(--text-muted);
+    background-color: transparent;
+    border: 0;
+    cursor: pointer;
+  }
+
+  .lang-switcher__btn:hover {
+    color: var(--text-primary);
+    background-color: var(--row-hover);
+  }
+
+  .lang-switcher__btn:focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 1px;
+  }
+
+  .lang-switcher__btn--active {
+    color: var(--text-primary);
+    background-color: var(--panel-bg);
+    box-shadow: 0 0 0 1px var(--panel-border);
+  }
 }

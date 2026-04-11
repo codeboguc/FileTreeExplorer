@@ -1,5 +1,7 @@
+import { IMPORT_SOURCE_PASTED_LABEL } from '@/features/file-import/importSourceLabels'
 import type { ImportState } from '@/features/file-import/types'
 import { parseAndValidateTree } from '@/features/file-import/utils/parseAndValidateTree'
+import i18n from '@/i18n/config'
 import { getSampleTreeUrl, loadSampleTreeJson } from '@/services/loadSampleTreeJson'
 import {
   clearPersistedImportedTree,
@@ -8,31 +10,29 @@ import {
 } from '@/services/workspaceTreeLocalStorage'
 import { useState } from 'react'
 
-const initialStatusMessage =
-  'Import a JSON file to validate and render the file explorer.'
-
-const initialState: ImportState = {
-  selectedFileName: null,
-  statusMessage: initialStatusMessage,
-  statusType: 'idle',
-  treeRoot: null,
-}
-
 function buildInitialImportState(): ImportState {
+  const idleMessage = i18n.t('import.idleHint')
+  const initial: ImportState = {
+    selectedFileName: null,
+    statusMessage: idleMessage,
+    statusType: 'idle',
+    treeRoot: null,
+  }
+
   const persisted = readPersistedImportedTree()
   if (!persisted) {
-    return initialState
+    return initial
   }
 
   const parsedResult = parseAndValidateTree(persisted.sourceName, persisted.rawText)
   if (parsedResult.ok === false) {
     clearPersistedImportedTree()
-    return initialState
+    return initial
   }
 
   return {
     selectedFileName: persisted.sourceName,
-    statusMessage: `Restored "${persisted.sourceName}" from browser storage.`,
+    statusMessage: i18n.t('import.restored', { name: persisted.sourceName }),
     statusType: 'success',
     treeRoot: parsedResult.tree,
   }
@@ -61,10 +61,17 @@ export const useFileImport = () => {
     setImportSuccessTick((t) => t + 1)
     setState((prev) => ({
       ...prev,
+      selectedFileName: sourceName,
       statusType: 'success',
-      statusMessage: `"${sourceName}" is valid and loaded successfully.`,
+      statusMessage: i18n.t('import.loadedOk', { name: sourceName }),
       treeRoot: parsedResult.tree,
     }))
+  }
+
+  const handleImportPastedJson = (text: string) => {
+    const trimmed = text.trim()
+    setState((prev) => ({ ...prev, selectedFileName: IMPORT_SOURCE_PASTED_LABEL }))
+    applyJsonText(IMPORT_SOURCE_PASTED_LABEL, trimmed)
   }
 
   const handleFileSelect = (file: File | null) => {
@@ -83,7 +90,7 @@ export const useFileImport = () => {
         setState((prev) => ({
           ...prev,
           statusType: 'error',
-          statusMessage: `Failed to read file "${file.name}".`,
+          statusMessage: i18n.t('import.readFileFailed', { name: file.name }),
           treeRoot: null,
         }))
       })
@@ -101,7 +108,7 @@ export const useFileImport = () => {
         setState((prev) => ({
           ...prev,
           statusType: 'error',
-          statusMessage: `Failed to load sample file from "${samplePath}".`,
+          statusMessage: i18n.t('import.sampleLoadFailed', { path: samplePath }),
           treeRoot: null,
         }))
       }
@@ -111,6 +118,7 @@ export const useFileImport = () => {
   return {
     state,
     handleFileSelect,
+    handleImportPastedJson,
     handleLoadSample,
     importSuccessTick,
   }

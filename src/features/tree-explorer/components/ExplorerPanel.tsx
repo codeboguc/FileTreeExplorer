@@ -1,6 +1,7 @@
 import { Panel } from '@/components/organisms/Panel'
 import { TreeExplorer } from '@/features/tree-explorer/components/TreeExplorer'
 import type { TreeNode } from '@/features/tree-explorer/types'
+import { useTranslation } from 'react-i18next'
 
 type ExplorerPanelProps = {
   tree: TreeNode | null
@@ -9,26 +10,25 @@ type ExplorerPanelProps = {
 }
 
 export function ExplorerPanel({ tree, selectedPath, onSelectNode }: ExplorerPanelProps) {
+  const { t } = useTranslation()
+
   if (!tree) {
     return (
       <Panel
-        title="Explorer"
+        title={t('explorer.panelTitle')}
         className="h-full min-h-0"
         fillScrollBody
         fillScrollAxes="xy"
         bodyClassName="p-3"
       >
-        <p className="text-sm text-muted">
-          No validated tree loaded yet. Use &quot;Load sample JSON&quot; in the toolbar or
-          import a file from Home.
-        </p>
+        <p className="text-sm text-muted">{t('explorer.emptyState')}</p>
       </Panel>
     )
   }
 
   return (
     <Panel
-      title="Explorer"
+      title={t('explorer.panelTitle')}
       className="h-full min-h-0"
       fillScrollBody
       fillScrollAxes="xy"

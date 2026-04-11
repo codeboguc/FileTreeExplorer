@@ -1,6 +1,7 @@
 import { IconButton } from '@/components/atoms/IconButton'
 import { Check, Copy } from 'lucide-react'
 import { useCallback, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 type DetailsPanelHeaderPathProps = {
   /** Display path (e.g. for toolbar search / browser); copied to clipboard. */
@@ -8,6 +9,7 @@ type DetailsPanelHeaderPathProps = {
 }
 
 export function DetailsPanelHeaderPath({ pathForDisplay }: DetailsPanelHeaderPathProps) {
+  const { t } = useTranslation()
   const [copied, setCopied] = useState(false)
 
   const handleCopy = useCallback(async () => {
@@ -33,8 +35,12 @@ export function DetailsPanelHeaderPath({ pathForDisplay }: DetailsPanelHeaderPat
         onClick={() => {
           void handleCopy()
         }}
-        aria-label={copied ? 'Path copied to clipboard' : `Copy path: ${pathForDisplay}`}
-        title={copied ? 'Copied' : 'Copy path to clipboard'}
+        aria-label={
+          copied
+            ? t('details.copyPathCopiedAria')
+            : t('details.copyPathAria', { path: pathForDisplay })
+        }
+        title={copied ? t('details.copiedTitle') : t('details.copyPathTitle')}
       >
         {copied ? (
           <Check className="size-4" aria-hidden strokeWidth={2.25} />

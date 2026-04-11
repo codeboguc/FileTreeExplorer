@@ -26,7 +26,13 @@ import { useLocation, useNavigate } from 'react-router-dom'
 export function WorkspaceProvider({ children }: { children: ReactNode }) {
   const navigate = useNavigate()
   const location = useLocation()
-  const { state, handleFileSelect, handleLoadSample, importSuccessTick } = useFileImport()
+  const {
+    state,
+    handleFileSelect,
+    handleImportPastedJson,
+    handleLoadSample,
+    importSuccessTick,
+  } = useFileImport()
   const lastHandledImportTickRef = useRef(importSuccessTick)
   const [selectedNode, setSelectedNode] = useState<NodeSelection | null>(null)
   const [explorerSelectionSyncTick, setExplorerSelectionSyncTick] = useState(0)
@@ -109,7 +115,9 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
       resolvedSelectedNode,
       state,
       handleFileSelect,
+      handleImportPastedJson,
       handleLoadSample,
+      importSuccessTick,
     }),
     [
       theme,
@@ -123,7 +131,9 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
       resolvedSelectedNode,
       state,
       handleFileSelect,
+      handleImportPastedJson,
       handleLoadSample,
+      importSuccessTick,
     ],
   )
 

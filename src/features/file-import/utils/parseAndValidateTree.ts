@@ -1,3 +1,4 @@
+import i18n from '@/i18n/config'
 import { validateTreeJson, type TreeNode } from '@/lib/fileTree'
 
 type ParseResult = { ok: true; tree: TreeNode } | { ok: false; error: string }
@@ -8,7 +9,10 @@ export const parseAndValidateTree = (sourceName: string, text: string): ParseRes
   try {
     parsed = JSON.parse(text) as unknown
   } catch {
-    return { ok: false, error: `"${sourceName}" is not a valid JSON file.` }
+    return {
+      ok: false,
+      error: i18n.t('import.invalidJsonFile', { name: sourceName }),
+    }
   }
 
   const result = validateTreeJson(parsed)

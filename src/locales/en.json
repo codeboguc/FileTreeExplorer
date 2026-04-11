@@ -1,0 +1,79 @@
+{
+  "app": {
+    "title": "FileTree Explorer",
+    "documentTitle": "FileTree Explorer"
+  },
+  "home": {
+    "importTitle": "Import JSON tree",
+    "descriptionLine1": "Load JSON that describes folders and files. After a valid import you are taken to the tree explorer.",
+    "descriptionLine2": "You can try <1>Load sample JSON</1> in the toolbar at any time.",
+    "openTreeExplorer": "Open tree explorer",
+    "treeAlreadyLoaded": "A valid tree is already loaded."
+  },
+  "toolbar": {
+    "loadSample": "Load sample JSON",
+    "footerHintHome": "Use <1>Load sample JSON</1> above, or the import panel on this page (drag-and-drop, browse, or paste). Import status and validation errors appear below the paste area.",
+    "footerHintDefault": "Load sample JSON above, or open Home to import your own file. Session file and status appear on the right.",
+    "filePrefix": "File: {{name}}",
+    "noCustomFileLoaded": "No custom JSON file loaded",
+    "searchLabel": "Search tree by name",
+    "searchPlaceholder": "Search files and folders…",
+    "searchKbdTitle": "Focus search (Ctrl+Alt+F; on Mac: Control+Option+F)",
+    "searchResultsLabel": "Search results",
+    "searchNoMatches": "No matches",
+    "searchShortcutWin": "Ctrl+Alt+F",
+    "searchShortcutMac": "⌃⌥F"
+  },
+  "import": {
+    "idleHint": "Import a JSON file to validate and render the file explorer.",
+    "restored": "Restored \"{{name}}\" from browser storage.",
+    "loadedOk": "\"{{name}}\" is valid and loaded successfully.",
+    "readFileFailed": "Failed to read file \"{{name}}\".",
+    "sampleLoadFailed": "Failed to load sample file from \"{{path}}\".",
+    "invalidJsonFile": "\"{{name}}\" is not a valid JSON file.",
+    "dropTitle": "Drag and drop a <1>.json</1> file here",
+    "dropHint": "Tree format: root object or array of nodes with name, type, and children.",
+    "browseFile": "Browse JSON file",
+    "selectedFile": "Selected: {{name}}",
+    "noFileSelectedYet": "No file selected yet",
+    "dividerPaste": "or paste JSON below",
+    "pasteLabel": "Paste from clipboard",
+    "pastePlaceholder": "{ \"name\": \"root\", \"type\": \"folder\", \"children\": [] }",
+    "loadPasted": "Load pasted JSON",
+    "pasteHint": "Same validation as upload (Zod schema, then workspace root).",
+    "chooseFile": "Choose JSON file",
+    "noFileSelected": "No file selected",
+    "loadSampleShort": "Load sample"
+  },
+  "explorer": {
+    "panelTitle": "Explorer",
+    "emptyState": "No validated tree loaded yet. Use \"Load sample JSON\" in the toolbar or import a file from Home.",
+    "resizeHandle": "Resize explorer and details panels"
+  },
+  "details": {
+    "panelEmpty": "Details",
+    "panelFile": "File Details",
+    "panelFolder": "Folder Details",
+    "selectPrompt": "Select a node in Explorer to see file or folder details.",
+    "name": "Name",
+    "size": "Size",
+    "fullPath": "Full path",
+    "directChildren": "Direct children",
+    "subtreeSize": "Subtree size",
+    "childrenHeading": "Children",
+    "folderEmpty": "This folder has no children.",
+    "copyPathAria": "Copy path: {{path}}",
+    "copyPathCopiedAria": "Path copied to clipboard",
+    "copyPathTitle": "Copy path to clipboard",
+    "copiedTitle": "Copied"
+  },
+  "theme": {
+    "switchToLight": "Switch to light theme",
+    "switchToDark": "Switch to dark theme"
+  },
+  "language": {
+    "switchToEn": "English",
+    "switchToPl": "Polski",
+    "groupLabel": "Interface language"
+  }
+}
