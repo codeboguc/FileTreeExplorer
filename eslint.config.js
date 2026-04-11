@@ -36,5 +36,9 @@ export default defineConfig([
         tsconfigRootDir: import.meta.dirname,
       },
     },
+    rules: {
+      // Prefer if/else or switch over nested ? : (readability)
+      'no-nested-ternary': 'error',
+    },
   },
 ])

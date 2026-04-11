@@ -1,0 +1,178 @@
+{
+  "name": "this-is-an-extremely-long-root-directory-name-that-should-definitely-break-or-overflow-the-ui-layout",
+  "type": "folder",
+  "children": [
+    {
+      "name": "a-very-long-first-level-folder-name-that-goes-on-and-on-without-stopping-anytime-soon",
+      "type": "folder",
+      "children": [
+        {
+          "name": "second-level-folder-with-an-absolutely-ridiculous-name-that-nobody-would-ever-use-in-real-life",
+          "type": "folder",
+          "children": [
+            {
+              "name": "yet-another-deeply-nested-third-level-directory-with-an-unreasonably-long-name-just-to-cause-pain",
+              "type": "folder",
+              "children": [
+                {
+                  "name": "fourth-level-nested-folder-name-that-is-still-going-and-has-no-intention-of-stopping-whatsoever",
+                  "type": "folder",
+                  "children": [
+                    {
+                      "name": "fifth-level-deeply-nested-folder-pushing-the-limits-of-what-a-sane-person-would-name-a-directory",
+                      "type": "folder",
+                      "children": [
+                        {
+                          "name": "sixth-level-folder-we-are-going-deeper-and-deeper-into-the-abyss-of-nested-directories-right-now",
+                          "type": "folder",
+                          "children": [
+                            {
+                              "name": "seventh-level-are-we-still-here-yes-we-are-this-folder-name-is-not-going-to-stop-being-long",
+                              "type": "folder",
+                              "children": [
+                                {
+                                  "name": "eighth-level-the-nesting-goes-on-forever-like-a-bad-dream-that-you-cannot-escape-from-easily",
+                                  "type": "folder",
+                                  "children": [
+                                    {
+                                      "name": "ninth-level-we-are-almost-in-double-digits-of-nesting-which-should-terrify-any-frontend-developer",
+                                      "type": "folder",
+                                      "children": [
+                                        {
+                                          "name": "tenth-level-double-digit-nesting-achieved-congratulations-the-ui-is-probably-broken-by-now",
+                                          "type": "folder",
+                                          "children": [
+                                            {
+                                              "name": "eleventh-level-eleven-levels-deep-like-an-ocean-trench-of-folder-structures-nobody-asked-for",
+                                              "type": "folder",
+                                              "children": [
+                                                {
+                                                  "name": "twelfth-level-a-dozen-levels-of-nesting-this-is-the-folder-equivalent-of-deep-sea-exploration",
+                                                  "type": "folder",
+                                                  "children": [
+                                                    {
+                                                      "name": "thirteenth-level-unlucky-for-some-but-especially-unlucky-for-any-ui-that-tries-to-render-this",
+                                                      "type": "folder",
+                                                      "children": [
+                                                        {
+                                                          "name": "fourteenth-level-two-levels-away-from-the-goal-the-folder-name-is-still-aggressively-long",
+                                                          "type": "folder",
+                                                          "children": [
+                                                            {
+                                                              "name": "fifteenth-level-penultimate-depth-we-made-it-here-and-the-name-is-still-absolutely-enormous",
+                                                              "type": "folder",
+                                                              "children": [
+                                                                {
+                                                                  "name": "sixteenth-level-one-more-to-go-this-folder-name-is-a-monument-to-poor-directory-naming-conventions",
+                                                                  "type": "folder",
+                                                                  "children": [
+                                                                    {
+                                                                      "name": "seventeenth-level-so-close-to-twenty-but-the-journey-has-been-long-and-full-of-long-named-folders",
+                                                                      "type": "folder",
+                                                                      "children": [
+                                                                        {
+                                                                          "name": "eighteenth-level-almost-there-the-ui-has-surely-given-up-hope-by-this-point-in-the-tree",
+                                                                          "type": "folder",
+                                                                          "children": [
+                                                                            {
+                                                                              "name": "nineteenth-level-one-final-folder-stands-between-us-and-twenty-levels-of-glorious-nesting",
+                                                                              "type": "folder",
+                                                                              "children": [
+                                                                                {
+                                                                                  "name": "twentieth-level-maximum-depth-reached-this-is-the-bottom-of-the-rabbit-hole-congratulations",
+                                                                                  "type": "folder",
+                                                                                  "children": [
+                                                                                    {
+                                                                                      "name": "a-file-at-the-very-bottom-of-twenty-levels-of-nesting-with-a-name-that-is-also-unreasonably-long.ts",
+                                                                                      "type": "file",
+                                                                                      "size": 9999
+                                                                                    },
+                                                                                    {
+                                                                                      "name": "another-deeply-buried-file-that-no-file-explorer-was-designed-to-handle-gracefully.config.json",
+                                                                                      "type": "file",
+                                                                                      "size": 1234
+                                                                                    }
+                                                                                  ]
+                                                                                }
+                                                                              ]
+                                                                            }
+                                                                          ]
+                                                                        }
+                                                                      ]
+                                                                    }
+                                                                  ]
+                                                                }
+                                                              ]
+                                                            }
+                                                          ]
+                                                        }
+                                                      ]
+                                                    }
+                                                  ]
+                                                }
+                                              ]
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "sibling-folder-at-root-level-also-with-a-name-that-is-far-too-long-for-any-normal-use-case",
+      "type": "folder",
+      "children": [
+        {
+          "name": "a-file-with-an-extremely-long-name-that-should-overflow-any-reasonable-column-width-in-the-ui.tsx",
+          "type": "file",
+          "size": 88888
+        },
+        {
+          "name": "another-long-named-file-that-is-a-sibling-to-the-previous-long-named-file-in-this-folder.test.ts",
+          "type": "file",
+          "size": 42000
+        },
+        {
+          "name": "yet-one-more-file-with-an-absurdly-long-filename-that-contributes-to-the-overall-chaos.module.css",
+          "type": "file",
+          "size": 7777
+        }
+      ]
+    },
+    {
+      "name": "short",
+      "type": "folder",
+      "children": [
+        {
+          "name": "a.ts",
+          "type": "file",
+          "size": 1
+        },
+        {
+          "name": "b.ts",
+          "type": "file",
+          "size": 2
+        }
+      ]
+    },
+    {
+      "name": "this-root-level-file-has-a-name-so-long-it-would-make-any-unix-sysadmin-cry-with-sadness.json",
+      "type": "file",
+      "size": 65535
+    }
+  ]
+}

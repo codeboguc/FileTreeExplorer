@@ -1,11 +1,16 @@
 import {
   CORE_EXPLORER_ROOT_NAME,
+  encodeRelativeTreePathForUrl,
+  findNodeByRelativePath,
+  sortTreeChildrenForDisplay,
+  formatNodePathForDisplay,
+  getNodePathLinkParts,
   TreeNodeType,
   validateTreeJson,
   wrapAsCoreExplorerRoot,
   type FolderNode,
   type TreeNode,
-} from './fileTree'
+} from '@/lib/fileTree'
 
 /** Deep tree: mixed folders/files, empty folder, size 0, dotted names, unicode. */
 const complexValidSingleRoot = {
@@ -263,14 +268,96 @@ describe('validateTreeJson', () => {
 
 describe('wrapAsCoreExplorerRoot', () => {
   it('builds a folder with fixed core name', () => {
-    const roots: TreeNode[] = [
-      { name: 'a', type: TreeNodeType.File, size: 1 },
-    ]
+    const roots: TreeNode[] = [{ name: 'a', type: TreeNodeType.File, size: 1 }]
     const wrapped = wrapAsCoreExplorerRoot(roots)
     expect(wrapped).toEqual({
       name: CORE_EXPLORER_ROOT_NAME,
       type: TreeNodeType.Folder,
       children: roots,
     })
+  })
+})
+
+describe('formatNodePathForDisplay', () => {
+  it('uses dot for workspace root and strips workspace/ prefix', () => {
+    expect(formatNodePathForDisplay('workspace')).toBe('.')
+    expect(formatNodePathForDisplay('workspace/repo/src/app.tsx')).toBe('repo/src/app.tsx')
+  })
+
+  it('leaves non-workspace paths unchanged', () => {
+    expect(formatNodePathForDisplay('custom-root/a')).toBe('custom-root/a')
+  })
+})
+
+describe('getNodePathLinkParts', () => {
+  it('omits workspace from labels but keeps internal full paths', () => {
+    expect(getNodePathLinkParts('workspace/repo/src/app.tsx')).toEqual([
+      { label: 'repo', fullPath: 'workspace/repo' },
+      { label: 'src', fullPath: 'workspace/repo/src' },
+      { label: 'app.tsx', fullPath: 'workspace/repo/src/app.tsx' },
+    ])
+  })
+
+  it('uses dot for workspace-only path', () => {
+    expect(getNodePathLinkParts('workspace')).toEqual([
+      { label: '.', fullPath: CORE_EXPLORER_ROOT_NAME },
+    ])
+  })
+})
+
+describe('sortTreeChildrenForDisplay', () => {
+  it('orders folders first, then TypeScript files, then other files', () => {
+    const nodes: TreeNode[] = [
+      { name: 'readme.md', type: TreeNodeType.File, size: 1 },
+      { name: 'nested', type: TreeNodeType.Folder, children: [] },
+      { name: 'App.tsx', type: TreeNodeType.File, size: 2 },
+      { name: 'util.ts', type: TreeNodeType.File, size: 3 },
+    ]
+    expect(sortTreeChildrenForDisplay(nodes).map((n) => n.name)).toEqual([
+      'nested',
+      'App.tsx',
+      'util.ts',
+      'readme.md',
+    ])
+  })
+})
+
+describe('encodeRelativeTreePathForUrl', () => {
+  it('encodes each segment and keeps slashes between them', () => {
+    expect(encodeRelativeTreePathForUrl('a/b c/d')).toBe('a/b%20c/d')
+  })
+
+  it('returns empty string for empty path', () => {
+    expect(encodeRelativeTreePathForUrl('')).toBe('')
+    expect(encodeRelativeTreePathForUrl('  /  ')).toBe('')
+  })
+})
+
+describe('findNodeByRelativePath', () => {
+  let wrappedRoot: TreeNode
+
+  beforeAll(() => {
+    const r = validateTreeJson(complexValidSingleRoot)
+    if (!r.ok) {
+      throw new Error('expected valid tree')
+    }
+    wrappedRoot = r.data
+  })
+
+  it('matches path segments case-insensitively and returns canonical casing', () => {
+    const hit = findNodeByRelativePath(wrappedRoot, 'repo/SRC/app.tsx')
+    expect(hit).not.toBeNull()
+    expect(hit!.node.name).toBe('app.tsx')
+    expect(hit!.fullPath).toBe('workspace/repo/src/app.tsx')
+  })
+
+  it('accepts optional root segment with different casing', () => {
+    const hit = findNodeByRelativePath(wrappedRoot, 'WORKSPACE/repo')
+    expect(hit).not.toBeNull()
+    expect(hit!.fullPath).toBe('workspace/repo')
+  })
+
+  it('returns null when no case-insensitive segment match exists', () => {
+    expect(findNodeByRelativePath(wrappedRoot, 'repo/nope')).toBeNull()
   })
 })

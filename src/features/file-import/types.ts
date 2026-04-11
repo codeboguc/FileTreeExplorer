@@ -1,4 +1,4 @@
-import type { TreeNode } from '../../lib/fileTree'
+import type { TreeNode } from '@/lib/fileTree'
 
 export type ImportStatusType = 'idle' | 'success' | 'error'
 

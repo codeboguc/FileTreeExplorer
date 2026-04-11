@@ -1,0 +1,129 @@
+/* -------------------------------------------------------------------------- */
+/* Panels — bordered cards with optional header (Explorer, Details, Home).     */
+/* -------------------------------------------------------------------------- */
+
+@layer components {
+  .panel-shell {
+    @apply box-border min-h-0 w-full rounded-lg border;
+    border-color: var(--panel-border);
+    background-color: var(--panel-bg);
+  }
+
+  .panel-shell--fill-scroll {
+    @apply flex h-full max-h-full min-h-0 flex-col overflow-hidden;
+  }
+
+  /* Outer: flex item that shrinks; inner: actual scrollport (bounded height → scrollbars). */
+  .panel-shell__fill-scroll-outer {
+    @apply flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden;
+  }
+
+  .panel-shell__fill-scroll-inner {
+    @apply min-h-0 min-w-0 flex-1;
+    scrollbar-width: auto;
+    scrollbar-color: var(--panel-border) var(--panel-bg);
+  }
+
+  .panel-shell__fill-scroll-inner--y {
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  .panel-shell__fill-scroll-inner--xy {
+    overflow: auto;
+  }
+
+  .panel-shell__fill-scroll-inner::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  .panel-shell__fill-scroll-inner::-webkit-scrollbar-track {
+    border-radius: 4px;
+    background-color: var(--panel-bg);
+  }
+
+  .panel-shell__fill-scroll-inner::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background-color: var(--panel-border);
+  }
+
+  .panel-shell__fill-scroll-inner::-webkit-scrollbar-thumb:hover {
+    background-color: var(--text-muted);
+  }
+
+  .panel-header {
+    @apply flex shrink-0 min-w-0 items-center justify-between gap-2 border-b px-3 py-2;
+    border-color: var(--panel-border);
+  }
+
+  .panel-title {
+    @apply shrink-0 text-sm font-semibold;
+    color: var(--text-primary);
+  }
+
+  .panel-header-aside {
+    @apply min-w-0 flex-1 pl-2 text-right;
+  }
+
+  .panel-header-path-truncate {
+    @apply block max-w-full truncate font-mono;
+    color: var(--text-muted);
+  }
+
+  /* Home — title + description + content (drop zone + browse) */
+  .home-import-panel {
+    @apply flex w-full min-w-0 flex-col;
+  }
+
+  .home-import-title {
+    @apply text-lg font-semibold tracking-tight;
+    color: var(--text-primary);
+  }
+
+  .home-import-description {
+    @apply mt-2 max-w-prose text-sm leading-relaxed;
+    color: var(--text-muted);
+  }
+
+  .home-import-tree-cta {
+    @apply mt-6 flex w-full min-w-0 flex-wrap items-center gap-3;
+  }
+
+  .home-import-content {
+    @apply mt-6 w-full min-w-0;
+  }
+
+  .json-import-dropzone-root {
+    @apply w-full;
+  }
+
+  .json-drop-zone {
+    @apply flex flex-col items-center justify-center gap-3 rounded-lg border-2 border-dashed px-6 py-10 text-center transition-colors;
+    border-color: var(--panel-border);
+    background-color: var(--toolbar-search-bg);
+  }
+
+  .json-drop-zone--active {
+    border-color: var(--focus-ring);
+    background-color: var(--row-hover);
+  }
+
+  .json-drop-zone-icon {
+    color: var(--text-muted);
+  }
+
+  .json-drop-zone--active .json-drop-zone-icon {
+    color: var(--selection-accent);
+  }
+
+  .json-drop-zone-text {
+    @apply text-sm;
+    color: var(--text-primary);
+  }
+
+  .json-drop-zone-hint {
+    @apply max-w-sm text-xs leading-relaxed;
+    color: var(--text-muted);
+  }
+}

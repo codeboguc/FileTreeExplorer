@@ -2,7 +2,7 @@
 
 **Repository:** [github.com/codeboguc/FileTreeExplorer](https://github.com/codeboguc/FileTreeExplorer)
 
-Internal-style **file tree explorer** for JSON that describes a directory layout. Paste or upload JSON, browse an expandable tree, open node details, and navigate with **React Router** URLs. The Home page includes a **reference layout** image (`/reference-layout.png`) for UI direction.
+Internal-style **file tree explorer** for JSON that describes a directory layout. Paste or upload JSON, browse an expandable tree, open node details, and navigate with **React Router** URLs.
 
 Clone (HTTPS or SSH):
 
@@ -53,4 +53,3 @@ Open the URL shown in the terminal (usually `http://localhost:5173`).
 - Full-text **search** across the tree with persisted results.
 - Richer **preview** (e.g. syntax-highlighted file content from metadata).
 - Stricter accessibility (e.g. `aria-activedescendant` for the tree).
-

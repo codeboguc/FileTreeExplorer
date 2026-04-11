@@ -34,5 +34,40 @@ export const useExpandedFolders = () => {
     setExpandedPaths(new Set([ROOT_PATH_KEY]))
   }, [])
 
-  return { isExpanded, toggleExpanded, resetExpanded }
+  /** Collapses all folders except those on `pathKeys` (toolbar search / details path). */
+  const syncExpandedToAncestorPath = useCallback((pathKeys: readonly string[]) => {
+    setExpandedPaths(() => {
+      const next = new Set<string>([ROOT_PATH_KEY])
+      for (const key of pathKeys) {
+        next.add(key)
+      }
+      return next
+    })
+  }, [])
+
+  /** Adds keys so the selection path is visible; keeps other expanded folders (explorer). */
+  const expandPaths = useCallback((pathKeys: readonly string[]) => {
+    if (pathKeys.length === 0) {
+      return
+    }
+    setExpandedPaths((prev) => {
+      const next = new Set(prev)
+      let changed = false
+      for (const key of pathKeys) {
+        if (!next.has(key)) {
+          next.add(key)
+          changed = true
+        }
+      }
+      return changed ? next : prev
+    })
+  }, [])
+
+  return {
+    isExpanded,
+    toggleExpanded,
+    resetExpanded,
+    syncExpandedToAncestorPath,
+    expandPaths,
+  }
 }

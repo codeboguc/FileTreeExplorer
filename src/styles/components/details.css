@@ -1,0 +1,126 @@
+/* -------------------------------------------------------------------------- */
+/* Details panel — metadata grid, section labels, folder children list.        */
+/* -------------------------------------------------------------------------- */
+
+@layer components {
+  .details-panel-inner {
+    @apply max-w-full min-w-0;
+    width: 100%;
+  }
+
+  .details-meta-grid {
+    @apply grid min-w-0 w-full max-w-full gap-x-3 gap-y-2 text-sm;
+    grid-template-columns: 140px minmax(0, 1fr);
+  }
+
+  .details-meta-grid dd {
+    @apply min-w-0;
+    overflow-wrap: anywhere;
+  }
+
+  /* Header: truncated path + copy (sits in `.panel-header-aside`) */
+  .details-panel-header-path {
+    @apply flex min-w-0 flex-1 items-center justify-end gap-1.5 pl-2;
+  }
+
+  .details-panel-header-path__text {
+    @apply min-w-0 flex-1 truncate text-right font-mono;
+    color: var(--text-muted);
+  }
+
+  .details-panel-header-path__copy {
+    @apply shrink-0 rounded p-1;
+    color: var(--text-muted);
+    background-color: transparent;
+    transition:
+      color 0.15s ease,
+      background-color 0.15s ease;
+  }
+
+  .details-panel-header-path__copy:hover {
+    color: var(--text-primary);
+    background-color: var(--row-hover);
+  }
+
+  .details-panel-header-path__copy:focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 1px;
+  }
+
+  .details-meta-row {
+    @apply contents;
+  }
+
+  .details-section-label {
+    @apply mb-2 text-xs font-semibold uppercase tracking-wide;
+    color: var(--text-muted);
+  }
+
+  .details-children-list {
+    @apply min-w-0 space-y-1 text-left text-sm;
+  }
+
+  .details-children-list .interactive-list-item {
+    @apply flex w-full min-w-0 max-w-full justify-start text-left;
+  }
+
+  .details-children-name {
+    @apply min-w-0 flex-1 truncate font-mono;
+    color: var(--text-primary);
+  }
+
+  .details-file-size {
+    @apply ml-2 text-xs;
+    color: var(--text-muted);
+  }
+
+  /* Clickable full path in details → sync explorer selection */
+  .details-path-links {
+    @apply block min-w-0 text-sm leading-relaxed;
+    overflow-wrap: anywhere;
+  }
+
+  .details-path-plain {
+    @apply block min-w-0 font-mono text-sm;
+    color: var(--text-primary);
+    overflow-wrap: anywhere;
+  }
+
+  .details-path-segment-wrap {
+    @apply inline;
+  }
+
+  .details-path-sep {
+    @apply select-none px-px;
+    color: var(--text-muted);
+  }
+
+  .details-path-segment-btn {
+    @apply max-w-full rounded px-0.5 font-mono text-sm;
+    overflow-wrap: anywhere;
+    color: var(--selection-accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    background-color: transparent;
+  }
+
+  .details-path-segment-btn:hover {
+    color: var(--text-primary);
+    background-color: var(--row-hover);
+  }
+
+  .details-path-segment-btn:focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 1px;
+  }
+
+  .details-path-segment-btn--current {
+    color: var(--text-primary);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .details-path-segment-btn--current:hover {
+    text-decoration: underline;
+  }
+}

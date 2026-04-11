@@ -1,3 +1,5 @@
+import { FileIconKind, getFileIconKind } from '@/features/tree-explorer/utils/nodeIcons'
+import { TreeNodeType } from '@/lib/fileTree'
 import {
   File,
   FileArchive,
@@ -11,8 +13,6 @@ import {
   Folder,
   FolderOpen,
 } from 'lucide-react'
-import { TreeNodeType } from '../../../lib/fileTree'
-import { FileIconKind, getFileIconKind } from '../utils/nodeIcons'
 
 type NodeIconProps = {
   type: TreeNodeType

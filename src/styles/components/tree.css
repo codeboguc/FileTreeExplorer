@@ -1,0 +1,58 @@
+/* -------------------------------------------------------------------------- */
+/* Tree explorer — row states, keyboard focus ring, folder child list links.    */
+/* -------------------------------------------------------------------------- */
+
+@layer components {
+  /* Widen with content so `.panel-shell__fill-scroll-inner` can show a horizontal scrollbar. */
+  .tree-explorer-viewport {
+    min-width: 100%;
+    width: max-content;
+  }
+
+  .tree-explorer-list {
+    @apply min-w-full;
+    width: max-content;
+  }
+
+  .tree-row {
+    @apply flex w-max items-center justify-between gap-2 rounded py-1 pr-2 text-sm transition-colors;
+    color: var(--text-primary);
+  }
+
+  .tree-row:hover {
+    background-color: var(--row-hover);
+  }
+
+  .tree-row-selected {
+    background-color: var(--row-selected);
+    box-shadow: inset 2px 0 0 var(--selection-accent);
+  }
+
+  .tree-row:active {
+    background-color: var(--row-active);
+  }
+
+  .tree-row-button {
+    @apply flex min-w-0 items-center gap-1.5 rounded text-left;
+  }
+
+  .tree-row-name {
+    @apply shrink-0 font-mono;
+    white-space: nowrap;
+  }
+
+  .tree-row-button:focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 1px;
+  }
+
+  .interactive-list-item {
+    @apply inline-flex items-center gap-2 rounded px-2 py-1;
+    color: var(--text-primary);
+    background-color: transparent;
+  }
+
+  .interactive-list-item:hover {
+    background-color: var(--row-hover);
+  }
+}

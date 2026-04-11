@@ -3,10 +3,11 @@
   "compilerOptions": {
     "module": "CommonJS",
     "moduleResolution": "node",
+    "ignoreDeprecations": "6.0",
     "allowImportingTsExtensions": false,
     "verbatimModuleSyntax": false,
     "noEmit": true,
-    "types": ["jest", "node"]
+    "types": ["jest", "node", "vite/client"]
   },
   "include": ["src/**/*.ts", "src/**/*.tsx"],
   "exclude": []
